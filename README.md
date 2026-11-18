@@ -8,8 +8,7 @@
 </p>
 
 <p align="center">
-  <a href="https://sabrinnalouise.github.io/diretrix/"><b>Abrir o site</b></a> ·
-  <a href="https://sabrinnalouise.github.io/diretrix/app/"><b>Abrir o protótipo</b></a> ·
+  <a href="https://sabrinnalouise.github.io/Diretrix/"><b>Abrir o site</b></a> ·
   <a href="#como-instalar"><b>Como instalar</b></a>
 </p>
 
@@ -62,7 +61,7 @@ E reclamar funciona: em 2025 o Consumidor.gov.br finalizou **2.328.863** reclama
 
 ## Como instalar
 
-O Diretrix é um app web instalável (PWA): não precisa de loja de aplicativos. Depois de instalado, ele abre em janela própria com este ícone:
+O Diretrix é um app web instalável (PWA): não precisa de loja de aplicativos. O acesso ao protótipo é pelo app instalado, que abre em janela própria com este ícone:
 
 <p align="center"><img src="docs/icone.png" alt="Ícone do Diretrix" width="96"></p>
 
@@ -102,8 +101,8 @@ Não há etapa de build: são arquivos estáticos.
 ## Rodar no computador
 
 ```bash
-git clone https://github.com/SabrinnaLouise/diretrix.git
-cd diretrix
+git clone https://github.com/SabrinnaLouise/Diretrix.git
+cd Diretrix
 python3 -m http.server 8000
 ```
 

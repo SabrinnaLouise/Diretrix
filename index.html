@@ -291,7 +291,7 @@ footer p{font-size:.88rem;opacity:.8;max-width:70ch}
     <div class="copy">
       <h1>Conheça seus direitos de consumidor <em>antes de precisar deles.</em></h1>
       <p>O Diretrix explica a lei em linguagem simples e mostra o que fazer quando algo dá errado.</p>
-      <div class="acts"><button class="btn gold" data-ir-inst="cel">Instalar no celular</button><button class="btn ghost" data-ir-inst="pc">Instalar no computador</button><a class="btn ghost" href="app/index.html" target="_blank" rel="noopener">Abrir o protótipo</a></div>
+      <div class="acts"><button class="btn gold" data-ir-inst="cel">Instalar no celular</button><button class="btn ghost" data-ir-inst="pc">Instalar no computador</button></div>
     </div>
     <div class="scrub" aria-hidden="true"><i id="scrub"></i></div>
   </div>
@@ -403,19 +403,60 @@ footer p{font-size:.88rem;opacity:.8;max-width:70ch}
         <h3>Gratuito</h3>
         <div class="preco">R$ 0</div><p class="equiv">Para sempre.</p>
         <ul><li>Biblioteca completa e fontes oficiais</li><li>Trixie com limite diário de mensagens</li><li>Até 2 fotos e 2 documentos</li><li>Histórico das conversas recentes</li><li>Próximo passo, checklist e preparo de solicitações</li></ul>
-        <a class="btn out" href="app/index.html" target="_blank" rel="noopener">Abrir o app</a>
+        <button class="btn out" data-ir-inst="auto">Assinar</button>
       </div>
       <div class="plano prem rv">
         <h3>Premium</h3>
         <div class="preco"><span id="preco">R$ 9,90</span> <small id="per">por mês</small></div><p class="equiv" id="equiv">Cobrança mensal.</p>
         <ul><li>Tudo do Gratuito</li><li>Mais mensagens com a Trixie</li><li>Mais fotos e documentos</li><li>Ouvir as respostas da Trixie</li><li>Histórico ampliado</li><li>Organização de documentos</li><li>Sem anúncios</li><li>Leitura assistida de documentos <em>em breve</em></li></ul>
-        <a class="btn gold" href="app/index.html" target="_blank" rel="noopener">Assinar no app</a>
+        <button class="btn gold" data-ir-inst="auto">Assinar</button>
       </div>
     </div>
   </div>
 </section>
 
-<!-- 10. DÚVIDAS -->
+<!-- 10. COMO INSTALAR -->
+<section class="sec" id="instalar">
+  <div class="wrap">
+    <span class="kicker">Como instalar</span>
+    <h2>Instale o Diretrix no celular ou no computador.</h2>
+    <p class="lead">O app abre em janela própria, com a carinha da coruja na tela inicial, no Dock ou no menu Iniciar.</p>
+    <div class="alt" role="tablist" aria-label="Onde instalar">
+      <button role="tab" id="tab-cel" aria-controls="inst-cel" aria-selected="true" aria-pressed="true">Celular</button>
+      <button role="tab" id="tab-pc" aria-controls="inst-pc" aria-selected="false" aria-pressed="false" tabindex="-1">PC</button>
+    </div>
+    <div class="inst-g" id="inst-cel" role="tabpanel" aria-labelledby="tab-cel">
+      <div class="so" id="so-android">
+        <h3>Android, pelo Chrome</h3>
+        <ol><li>Abra o site no Chrome.</li><li>Toque em “Instalar no Android”.</li><li>Confirme em “Instalar”. Se o aviso não aparecer, use o menu de três pontos e escolha “Instalar app”.</li></ol>
+        <button class="btn pri" data-instalar="android">Instalar no Android</button>
+        <p class="msg" role="status"></p>
+      </div>
+      <div class="so" id="so-ios">
+        <h3>iPhone, pelo Safari</h3>
+        <ol><li>Abra o site no Safari.</li><li>Toque em Compartilhar.</li><li>Toque em “Adicionar à Tela de Início”.</li><li>Toque em “Adicionar”.</li></ol>
+        <button class="btn out" data-instalar="ios">Instalar no iPhone</button>
+        <p class="msg" role="status"></p>
+      </div>
+    </div>
+    <div class="inst-g" id="inst-pc" role="tabpanel" aria-labelledby="tab-pc" hidden>
+      <div class="so" id="so-windows">
+        <h3>Windows, pelo Chrome ou Edge</h3>
+        <ol><li>Abra o site no Chrome ou no Microsoft Edge.</li><li>Clique em “Instalar no Windows”.</li><li>Confirme em “Instalar”. O Diretrix ganha atalho no menu Iniciar e na área de trabalho.</li></ol>
+        <button class="btn pri" data-instalar="windows">Instalar no Windows</button>
+        <p class="msg" role="status"></p>
+      </div>
+      <div class="so" id="so-mac">
+        <h3>Mac, pelo Chrome, Edge ou Safari</h3>
+        <ol><li>Abra o site no Chrome, no Edge ou no Safari.</li><li>No Chrome ou no Edge, clique em “Instalar no Mac” e depois em “Instalar”.</li><li>No Safari, vá em Arquivo e escolha “Adicionar ao Dock”.</li><li>Pronto: o Diretrix já aparece no Dock.</li></ol>
+        <button class="btn out" data-instalar="mac">Instalar no Mac</button>
+        <p class="msg" role="status"></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 11. DÚVIDAS -->
 <section class="sec" id="duvidas">
   <div class="wrap">
     <span class="kicker">Dúvidas frequentes</span>
@@ -453,55 +494,13 @@ footer p{font-size:.88rem;opacity:.8;max-width:70ch}
   </div>
 </section>
 
-<!-- 11. COMO INSTALAR -->
-<section class="sec" id="instalar">
-  <div class="wrap">
-    <span class="kicker">Como instalar</span>
-    <h2>Instale o Diretrix no celular ou no computador.</h2>
-    <p class="lead">O app abre em janela própria, com a carinha da coruja na tela inicial, no Dock ou no menu Iniciar.</p>
-    <div class="alt" role="tablist" aria-label="Onde instalar">
-      <button role="tab" id="tab-cel" aria-controls="inst-cel" aria-selected="true" aria-pressed="true">Celular</button>
-      <button role="tab" id="tab-pc" aria-controls="inst-pc" aria-selected="false" aria-pressed="false" tabindex="-1">PC</button>
-    </div>
-    <div class="inst-g" id="inst-cel" role="tabpanel" aria-labelledby="tab-cel">
-      <div class="so" id="so-android">
-        <h3>Android, pelo Chrome</h3>
-        <ol><li>Abra o site no Chrome.</li><li>Toque em “Instalar no Android”.</li><li>Confirme em “Instalar”. Se o aviso não aparecer, use o menu de três pontos e escolha “Instalar app”.</li></ol>
-        <button class="btn pri" data-instalar="android">Instalar no Android</button>
-        <p class="msg" role="status"></p>
-      </div>
-      <div class="so" id="so-ios">
-        <h3>iPhone, pelo Safari</h3>
-        <ol><li>Abra o site no Safari.</li><li>Toque em Compartilhar.</li><li>Toque em “Adicionar à Tela de Início”.</li><li>Toque em “Adicionar”.</li></ol>
-        <button class="btn out" data-instalar="ios">Instalar no iPhone</button>
-        <p class="msg" role="status"></p>
-      </div>
-    </div>
-    <div class="inst-g" id="inst-pc" role="tabpanel" aria-labelledby="tab-pc" hidden>
-      <div class="so" id="so-windows">
-        <h3>Windows, pelo Chrome ou Edge</h3>
-        <ol><li>Abra o site no Chrome ou no Microsoft Edge.</li><li>Clique em “Instalar no Windows”.</li><li>Confirme em “Instalar”. O Diretrix ganha atalho no menu Iniciar e na área de trabalho.</li></ol>
-        <button class="btn pri" data-instalar="windows">Instalar no Windows</button>
-        <p class="msg" role="status"></p>
-      </div>
-      <div class="so" id="so-mac">
-        <h3>Mac, pelo Chrome, Edge ou Safari</h3>
-        <ol><li>Abra o site no Chrome, no Edge ou no Safari.</li><li>No Chrome ou no Edge, clique em “Instalar no Mac” e confirme.</li><li>No Safari, vá em Arquivo e escolha “Adicionar ao Dock”.</li><li>O Diretrix aparece no Dock e na pasta Aplicativos.</li></ol>
-        <button class="btn out" data-instalar="mac">Instalar no Mac</button>
-        <p class="msg" role="status"></p>
-      </div>
-    </div>
-    <div class="abrir"><a class="btn out" href="app/index.html" target="_blank" rel="noopener">Abrir o protótipo no navegador</a></div>
-  </div>
-</section>
-
 <!-- 12. CTA FINAL -->
 <section class="cta">
   <div class="wrap">
     <div class="txt">
       <h2>Leve a Trixie no bolso.</h2>
       <p>Gratuito para consultar. Instale e conheça seus direitos.</p>
-      <div class="acts"><button class="btn gold" data-ir-inst="cel">Instalar no celular</button><button class="btn ghost" data-ir-inst="pc">Instalar no computador</button><a class="btn ghost" href="app/index.html" target="_blank" rel="noopener">Abrir o protótipo</a></div>
+      <div class="acts"><button class="btn gold" data-ir-inst="cel">Instalar no celular</button><button class="btn ghost" data-ir-inst="pc">Instalar no computador</button></div>
     </div>
     <img src="img/trixie-ola.webp" alt="Trixie acenando">
   </div>
@@ -671,12 +670,18 @@ footer p{font-size:.88rem;opacity:.8;max-width:70ch}
   mostrar(celular ? 'cel' : 'pc');
   var meu = ios ? 'ios' : android ? 'android' : windows ? 'windows' : mac ? 'mac' : '';
   if (meu) $('#so-' + meu).classList.add('alvo');
-  $$('[data-ir-inst]').forEach(function (b) { b.addEventListener('click', function () { mostrar(b.dataset.irInst); ir('instalar'); }); });
+  $$('[data-ir-inst]').forEach(function (b) { b.addEventListener('click', function () { var q = b.dataset.irInst; mostrar(q === 'auto' ? (celular ? 'cel' : 'pc') : q); ir('instalar'); }); });
 
   addEventListener('beforeinstallprompt', function (e) { e.preventDefault(); adiado = e; });
-  addEventListener('appinstalled', function () { adiado = null; $$('.so .msg').forEach(function (m) { m.textContent = 'Diretrix instalado. Procure a carinha da coruja.'; }); });
+  addEventListener('appinstalled', function () { adiado = null; var t = ONDE(); $$('.so .msg').forEach(function (m) { m.textContent = t; }); });
 
-  var MOLDURA = 'Nesta prévia dentro do Claude o navegador não permite instalar. Instale pelo site publicado ou use “Abrir o protótipo”.';
+  function ONDE() {
+    return mac ? 'Pronto! O Diretrix já está no Dock e na pasta Aplicativos.'
+      : windows ? 'Pronto! O Diretrix já está no menu Iniciar e na área de trabalho.'
+      : android ? 'Pronto! O Diretrix já está na sua tela inicial.'
+      : 'Pronto! O Diretrix já está instalado.';
+  }
+  var MOLDURA = 'Nesta prévia dentro do Claude o navegador não permite instalar. Abra o site publicado para instalar.';
   var ROTEIRO = {
     android: function () { return ios ? 'Este aparelho é um iPhone: use os passos do Safari ao lado.' : android ? 'Abra o menu de três pontos do Chrome e escolha “Instalar app”.' : 'Abra este site no Chrome do seu celular Android.'; },
     ios: function () { return ios ? 'Toque em Compartilhar, na barra do Safari, e depois em “Adicionar à Tela de Início”.' : 'Abra este site no Safari do iPhone.'; },
@@ -692,13 +697,13 @@ footer p{font-size:.88rem;opacity:.8;max-width:70ch}
       var pedeNavegador = alvo !== 'ios' && !(alvo === 'mac' && safari);
       if (adiado && pedeNavegador) {
         adiado.prompt();
-        adiado.userChoice.then(function (r) { msg.textContent = r.outcome === 'accepted' ? 'Instalando. A carinha da coruja vai aparecer em instantes.' : 'Instalação cancelada. Você pode tentar de novo quando quiser.'; });
+        adiado.userChoice.then(function (r) { msg.textContent = r.outcome === 'accepted' ? ONDE() : 'Instalação cancelada. Você pode tentar de novo quando quiser.'; });
         adiado = null; return;
       }
       msg.textContent = ROTEIRO[alvo]();
     });
   });
-  if (instalado) $$('.so .msg').forEach(function (m) { m.textContent = 'O Diretrix já está instalado neste aparelho.'; });
+  if (instalado) $$('.so .msg').forEach(function (m) { m.textContent = ONDE(); });
   if ('serviceWorker' in navigator && location.protocol === 'https:' && !emMoldura) {
     try { navigator.serviceWorker.register('sw.js').catch(function () { }); } catch (e) { }
   }
