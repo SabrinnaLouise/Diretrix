@@ -4,7 +4,7 @@
   "description": "Entenda seus direitos de consumidor e descubra o que fazer, com a Trixie.",
   "lang": "pt-BR",
   "start_url": "app/index.html",
-  "scope": "./",
+  "scope": "app/",
   "display": "standalone",
   "orientation": "portrait",
   "background_color": "#3A8669",
@@ -41,8 +41,5 @@
       "platform": "webapp",
       "url": "https://sabrinnalouise.github.io/Diretrix/manifest.webmanifest"
     }
-  ],
-  "launch_handler": {
-    "client_mode": "navigate-existing"
-  }
+  ]
 }

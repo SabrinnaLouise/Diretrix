@@ -1,5 +1,5 @@
 /* Diretrix · service worker: guarda os arquivos do app para abrir sem internet */
-const CACHE = 'diretrix-v7';
+const CACHE = 'diretrix-v8';
 const ARQUIVOS = ['./', 'index.html', 'manifest.webmanifest', 'js/motion.js',
   'img/trixie-ola-filme.webp', 'img/trixie-pensa-filme.webp', 'img/trixie-aponta-filme.webp', 'img/trixie-confia-filme.webp',
   'img/trixie-icone.webp', 'img/trixie-chat.webp', 'img/trixie-ola.webp', 'img/trixie-ajuda.webp',
