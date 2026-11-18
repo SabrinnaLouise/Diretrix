@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
+<script>
+/* Aberto pelo ícone da tela inicial: entra direto no app, sem mostrar o site. */
+(function () { try { if (matchMedia('(display-mode: standalone)').matches || navigator.standalone === true) location.replace('app/index.html'); } catch (e) { } })();
+</script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Diretrix</title>
@@ -9,6 +13,9 @@
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" type="image/png" href="icons/favicon-48.png">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Diretrix">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -170,7 +177,7 @@ footer .logo .sobre-escuro{display:block}
 .cat h3{font-size:1.25rem}
 .cat ul{margin:4px 0 0;padding:0;list-style:none;color:var(--muted)}
 .cat li{padding:8px 0;border-top:1px solid var(--line)}
-@media (min-width:820px){.cats{grid-template-columns:repeat(3,1fr)}}
+@media (min-width:820px){.cats{grid-template-columns:repeat(6,1fr)}.cat{grid-column:span 2}.cat:nth-child(4){grid-column:2 / span 2}}
 
 /* 7. etapas */
 .etapas{display:grid;gap:0;margin-top:32px;counter-reset:e}
@@ -230,9 +237,16 @@ details p{padding:0 0 18px;color:var(--muted);max-width:65ch}
 .so li{counter-increment:n;display:flex;gap:14px;padding:12px 0;border-top:1px solid var(--line);align-items:baseline}
 .so li::before{content:counter(n);font-family:var(--display);font-weight:800;color:var(--gold-ink);width:1ch}
 .so .msg{font-size:.9rem;color:var(--emerald);font-weight:600;min-height:1.4em}
+#guia-ios{position:fixed;inset:0;z-index:60;background:rgba(8,21,18,.6);display:flex;align-items:flex-end;justify-content:center}
+#guia-ios[hidden]{display:none}
+.painel-ios{background:var(--bg);color:var(--ink);border-radius:18px 18px 0 0;padding:22px 20px calc(22px + env(safe-area-inset-bottom,0px));width:100%;max-width:520px;display:flex;flex-direction:column;gap:14px;position:relative}
+.painel-ios ol{margin:0;padding:0;list-style:none;counter-reset:n}
+.painel-ios li{counter-increment:n;display:flex;gap:12px;padding:10px 0;border-top:1px solid var(--line)}
+.painel-ios li::before{content:counter(n);font-family:var(--display);font-weight:800;color:var(--gold-ink);width:1ch}
+.painel-ios .seta{position:absolute;bottom:-34px;left:50%;transform:translateX(-50%);font-size:1.6rem;color:var(--gold-bright);animation:desce 1.2s ease-in-out infinite}
+@keyframes desce{50%{transform:translate(-50%,6px)}}
 .inst-g[hidden]{display:none}
-#instalar .alt{margin-top:28px}
-#instalar .inst-g{margin-top:20px}
+
 .abrir{margin-top:20px}
 @media (min-width:820px){.inst-g{grid-template-columns:1fr 1fr}}
 
@@ -291,7 +305,7 @@ footer p{font-size:.88rem;opacity:.8;max-width:70ch}
     <div class="copy">
       <h1>Conheça seus direitos de consumidor <em>antes de precisar deles.</em></h1>
       <p>O Diretrix explica a lei em linguagem simples e mostra o que fazer quando algo dá errado.</p>
-      <div class="acts"><button class="btn gold" data-ir-inst="cel">Instalar no celular</button><button class="btn ghost" data-ir-inst="pc">Instalar no computador</button></div>
+      <div class="acts"><button class="btn gold" data-instalar="android">Instalar no Android</button><button class="btn ghost" data-instalar="ios">Instalar no iPhone</button></div>
     </div>
     <div class="scrub" aria-hidden="true"><i id="scrub"></i></div>
   </div>
@@ -352,11 +366,13 @@ footer p{font-size:.88rem;opacity:.8;max-width:70ch}
 <section class="sec">
   <div class="wrap">
     <span class="kicker">O que o app cobre</span>
-    <h2>Três categorias para começar.</h2>
+    <h2>Cinco categorias, 30 situações.</h2>
     <div class="cats">
       <article class="cat rv" style="--k:var(--emerald)"><span class="n">01</span><h3>Aeroportos</h3><ul><li>Atraso e cancelamento de voo</li><li>Bagagem extraviada ou danificada</li><li>Embarque negado</li><li>Reembolso de passagem</li></ul></article>
       <article class="cat rv" style="--k:var(--plum)"><span class="n">02</span><h3>Restaurantes</h3><ul><li>Taxa de serviço e couvert artístico</li><li>Consumação mínima</li><li>Perda de comanda</li><li>Cobrança indevida</li></ul></article>
       <article class="cat rv" style="--k:var(--gold)"><span class="n">03</span><h3>Compras on-line e presenciais</h3><ul><li>Direito de arrependimento e troca</li><li>Produto com defeito</li><li>Atraso na entrega</li><li>Produto diferente do anunciado</li></ul></article>
+      <article class="cat rv" style="--k:var(--petrol-2)"><span class="n">04</span><h3>Bancos e cartões</h3><ul><li>Tarifas na conta corrente</li><li>Golpe no Pix</li><li>Compra não reconhecida no cartão</li><li>Nome negativado sem aviso</li></ul></article>
+      <article class="cat rv" style="--k:var(--muted)"><span class="n">05</span><h3>Telefonia e internet</h3><ul><li>Cancelar plano ou serviço</li><li>Cobrança indevida na fatura</li><li>Multa de fidelidade</li><li>Internet abaixo do contratado</li></ul></article>
     </div>
   </div>
 </section>
@@ -403,13 +419,13 @@ footer p{font-size:.88rem;opacity:.8;max-width:70ch}
         <h3>Gratuito</h3>
         <div class="preco">R$ 0</div><p class="equiv">Para sempre.</p>
         <ul><li>Biblioteca completa e fontes oficiais</li><li>Trixie com limite diário de mensagens</li><li>Até 2 fotos e 2 documentos</li><li>Histórico das conversas recentes</li><li>Próximo passo, checklist e preparo de solicitações</li></ul>
-        <button class="btn out" data-ir-inst="auto">Assinar</button>
+        <button class="btn out" data-ir="instalar">Assinar</button>
       </div>
       <div class="plano prem rv">
         <h3>Premium</h3>
         <div class="preco"><span id="preco">R$ 9,90</span> <small id="per">por mês</small></div><p class="equiv" id="equiv">Cobrança mensal.</p>
         <ul><li>Tudo do Gratuito</li><li>Mais mensagens com a Trixie</li><li>Mais fotos e documentos</li><li>Ouvir as respostas da Trixie</li><li>Histórico ampliado</li><li>Organização de documentos</li><li>Sem anúncios</li><li>Leitura assistida de documentos <em>em breve</em></li></ul>
-        <button class="btn gold" data-ir-inst="auto">Assinar</button>
+        <button class="btn gold" data-ir="instalar">Assinar</button>
       </div>
     </div>
   </div>
@@ -419,37 +435,19 @@ footer p{font-size:.88rem;opacity:.8;max-width:70ch}
 <section class="sec" id="instalar">
   <div class="wrap">
     <span class="kicker">Como instalar</span>
-    <h2>Instale o Diretrix no celular ou no computador.</h2>
-    <p class="lead">O app abre em janela própria, com a carinha da coruja na tela inicial, no Dock ou no menu Iniciar.</p>
-    <div class="alt" role="tablist" aria-label="Onde instalar">
-      <button role="tab" id="tab-cel" aria-controls="inst-cel" aria-selected="true" aria-pressed="true">Celular</button>
-      <button role="tab" id="tab-pc" aria-controls="inst-pc" aria-selected="false" aria-pressed="false" tabindex="-1">PC</button>
-    </div>
-    <div class="inst-g" id="inst-cel" role="tabpanel" aria-labelledby="tab-cel">
+    <h2>Instale o Diretrix no seu celular.</h2>
+    <p class="lead">O app fica na tela inicial com a carinha da coruja e abre em tela cheia, sem a barra do navegador.</p>
+    <div class="inst-g">
       <div class="so" id="so-android">
         <h3>Android, pelo Chrome</h3>
-        <ol><li>Abra o site no Chrome.</li><li>Toque em “Instalar no Android”.</li><li>Confirme em “Instalar”. Se o aviso não aparecer, use o menu de três pontos e escolha “Instalar app”.</li></ol>
+        <ol><li>Abra o site no Chrome.</li><li>Toque em “Instalar no Android”.</li><li>Confirme em “Instalar”.</li></ol>
         <button class="btn pri" data-instalar="android">Instalar no Android</button>
         <p class="msg" role="status"></p>
       </div>
       <div class="so" id="so-ios">
         <h3>iPhone, pelo Safari</h3>
-        <ol><li>Abra o site no Safari.</li><li>Toque em Compartilhar.</li><li>Toque em “Adicionar à Tela de Início”.</li><li>Toque em “Adicionar”.</li></ol>
+        <ol><li>Abra o site no Safari.</li><li>Toque em Compartilhar (ou em ••• e depois em Compartilhar).</li><li>Toque em “Adicionar à Tela de Início”.</li><li>Deixe ligada a opção “Abrir como app web” e toque em “Adicionar”.</li></ol>
         <button class="btn out" data-instalar="ios">Instalar no iPhone</button>
-        <p class="msg" role="status"></p>
-      </div>
-    </div>
-    <div class="inst-g" id="inst-pc" role="tabpanel" aria-labelledby="tab-pc" hidden>
-      <div class="so" id="so-windows">
-        <h3>Windows, pelo Chrome ou Edge</h3>
-        <ol><li>Abra o site no Chrome ou no Microsoft Edge.</li><li>Clique em “Instalar no Windows”.</li><li>Confirme em “Instalar”. O Diretrix ganha atalho no menu Iniciar e na área de trabalho.</li></ol>
-        <button class="btn pri" data-instalar="windows">Instalar no Windows</button>
-        <p class="msg" role="status"></p>
-      </div>
-      <div class="so" id="so-mac">
-        <h3>Mac, pelo Chrome, Edge ou Safari</h3>
-        <ol><li>Abra o site no Chrome, no Edge ou no Safari.</li><li>No Chrome ou no Edge, clique em “Instalar no Mac” e depois em “Instalar”.</li><li>No Safari, vá em Arquivo e escolha “Adicionar ao Dock”.</li><li>Pronto: o Diretrix já aparece no Dock.</li></ol>
-        <button class="btn out" data-instalar="mac">Instalar no Mac</button>
         <p class="msg" role="status"></p>
       </div>
     </div>
@@ -471,7 +469,7 @@ footer p{font-size:.88rem;opacity:.8;max-width:70ch}
       <details open><summary>O Diretrix substitui um advogado?</summary><p>Não. O Diretrix oferece informação educativa e orientações gerais. Em casos complexos, procure um advogado, a Defensoria Pública ou o Procon.</p></details>
       <details><summary>De onde vêm as informações?</summary><p>Do Código de Defesa do Consumidor, do Decreto nº 7.962/2013, das regras da ANAC e de orientações públicas de Procons. Cada conteúdo mostra a fonte oficial, a data de revisão e se já foi verificado.</p></details>
       <details><summary>Preciso me cadastrar?</summary><p>Não. A biblioteca de direitos funciona sem cadastro, sem CPF e sem localização.</p></details>
-      <details><summary>Quais temas o app cobre?</summary><p>Nesta fase, três categorias: Aeroportos, Restaurantes e Compras on-line e presenciais.</p></details>
+      <details><summary>Quais temas o app cobre?</summary><p>Cinco categorias, com 6 situações cada: Aeroportos, Restaurantes, Compras on-line e presenciais, Bancos e cartões, e Telefonia e internet.</p></details>
     </div>
     <div class="painel" role="tabpanel" id="p-planos" aria-labelledby="aba-planos" hidden>
       <details open><summary>O que é gratuito?</summary><p>A biblioteca completa, as explicações, as fontes oficiais, o próximo passo com checklist e a Trixie com limite diário, incluindo até 2 fotos e 2 documentos.</p></details>
@@ -487,7 +485,7 @@ footer p{font-size:.88rem;opacity:.8;max-width:70ch}
     </div>
     <div class="painel" role="tabpanel" id="p-inst" aria-labelledby="aba-inst" hidden>
       <details open><summary>Preciso de loja de aplicativos?</summary><p>Não. O Diretrix é instalado direto pelo navegador, a partir deste site.</p></details>
-      <details><summary>Funciona no iPhone?</summary><p>Sim, pelo Safari: toque em Compartilhar e em “Adicionar à Tela de Início”.</p></details>
+      <details><summary>Funciona no iPhone?</summary><p>Sim, pelo Safari: toque em Compartilhar, depois em “Adicionar à Tela de Início”, e deixe ligada a opção “Abrir como app web”. Se ela estiver desligada, o ícone abre o site no Safari em vez do app.</p></details>
       <details><summary>Funciona sem internet?</summary><p>Depois de instalado, o app abre sem internet, porque o conteúdo fica guardado no aparelho. Os links para as fontes oficiais precisam de conexão.</p></details>
       <details><summary>Como desinstalo?</summary><p>Como qualquer app: segure o ícone na tela inicial e escolha remover ou desinstalar.</p></details>
     </div>
@@ -500,12 +498,26 @@ footer p{font-size:.88rem;opacity:.8;max-width:70ch}
     <div class="txt">
       <h2>Leve a Trixie no bolso.</h2>
       <p>Gratuito para consultar. Instale e conheça seus direitos.</p>
-      <div class="acts"><button class="btn gold" data-ir-inst="cel">Instalar no celular</button><button class="btn ghost" data-ir-inst="pc">Instalar no computador</button></div>
+      <div class="acts"><button class="btn gold" data-instalar="android">Instalar no Android</button><button class="btn ghost" data-instalar="ios">Instalar no iPhone</button></div>
     </div>
     <img src="img/trixie-ola.webp" alt="Trixie acenando">
   </div>
 </section>
 </main>
+
+<div id="guia-ios" hidden role="dialog" aria-modal="true" aria-labelledby="guia-t">
+  <div class="painel-ios">
+    <h3 id="guia-t">Instalar no iPhone</h3>
+    <ol>
+      <li><span>Toque em <b>Compartilhar</b> na barra do Safari. No iOS 26, toque em <b>•••</b> e depois em <b>Compartilhar</b>.</span></li>
+      <li><span>Role e toque em <b>Adicionar à Tela de Início</b>.</span></li>
+      <li><span>Deixe <b>ligada</b> a opção <b>Abrir como app web</b>. Desligada, o ícone abre o site no Safari.</span></li>
+      <li><span>Toque em <b>Adicionar</b>. A carinha da coruja aparece na tela inicial.</span></li>
+    </ol>
+    <button class="btn pri" id="guia-ok">Entendi</button>
+    <span class="seta" aria-hidden="true">↓</span>
+  </div>
+</div>
 
 <footer>
   <div class="wrap">
@@ -640,70 +652,57 @@ footer p{font-size:.88rem;opacity:.8;max-width:70ch}
   });
 
   /* ---------- instalação (PWA) ----------
-     Chrome e Edge (Android, Windows e Mac): o botão abre o pedido de instalação do navegador.
-     iPhone e Safari no Mac: a Apple não deixa um site se instalar sozinho; o botão mostra o caminho.
-     Dentro do Claude (página em moldura) o navegador bloqueia qualquer instalação. */
-  var ua = navigator.userAgent, adiado = null;
+     Android/Chrome: abre o pedido de instalação do navegador.
+     iPhone: a Apple não deixa um site se instalar sozinho; mostramos o passo a passo do Safari.
+     Já instalado: no Android o Chrome avisa e o botão vira "Abrir o app". */
+  var ua = navigator.userAgent, adiado = null, instaladoAndroid = false;
   var ios = /iphone|ipad|ipod/i.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
-  var android = /android/i.test(ua), windows = /windows/i.test(ua), mac = !ios && /macintosh|mac os x/i.test(ua);
-  var safari = /safari/i.test(ua) && !/chrome|chromium|crios|edg|fxios|android/i.test(ua);
-  var celular = ios || android || /mobile/i.test(ua);
+  var android = /android/i.test(ua);
+  var dentroDeApp = /instagram|fban|fbav|whatsapp|line\/|tiktok|musical_ly|snapchat|twitter/i.test(ua);
+  var iosSemSafari = ios && /crios|fxios|edgios/i.test(ua);
   var emMoldura = (function () { try { return window.self !== window.top; } catch (e) { return true; } })();
-  var instalado = matchMedia('(display-mode: standalone)').matches || navigator.standalone === true;
+  var guia = $('#guia-ios');
+  if (ios) $('#so-ios').classList.add('alvo'); else if (android) $('#so-android').classList.add('alvo');
 
-  /* abas Celular / PC */
-  var tabs = [$('#tab-cel'), $('#tab-pc')];
-  function mostrar(qual) {
-    tabs.forEach(function (t) {
-      var on = t.id === 'tab-' + qual;
-      t.setAttribute('aria-selected', on); t.setAttribute('aria-pressed', on); t.tabIndex = on ? 0 : -1;
-      document.getElementById(t.getAttribute('aria-controls')).hidden = !on;
-    });
-  }
-  tabs.forEach(function (t, i) {
-    t.addEventListener('click', function () { mostrar(t.id.slice(4)); });
-    t.addEventListener('keydown', function (e) {
-      if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
-      var n = tabs[1 - i]; mostrar(n.id.slice(4)); n.focus();
-    });
-  });
-  mostrar(celular ? 'cel' : 'pc');
-  var meu = ios ? 'ios' : android ? 'android' : windows ? 'windows' : mac ? 'mac' : '';
-  if (meu) $('#so-' + meu).classList.add('alvo');
-  $$('[data-ir-inst]').forEach(function (b) { b.addEventListener('click', function () { var q = b.dataset.irInst; mostrar(q === 'auto' ? (celular ? 'cel' : 'pc') : q); ir('instalar'); }); });
-
+  function falar(alvo, texto) { $$('#so-' + alvo + ' .msg').forEach(function (m) { m.textContent = texto; }); }
   addEventListener('beforeinstallprompt', function (e) { e.preventDefault(); adiado = e; });
-  addEventListener('appinstalled', function () { adiado = null; var t = ONDE(); $$('.so .msg').forEach(function (m) { m.textContent = t; }); });
-
-  function ONDE() {
-    return mac ? 'Pronto! O Diretrix já está no Dock e na pasta Aplicativos.'
-      : windows ? 'Pronto! O Diretrix já está no menu Iniciar e na área de trabalho.'
-      : android ? 'Pronto! O Diretrix já está na sua tela inicial.'
-      : 'Pronto! O Diretrix já está instalado.';
+  addEventListener('appinstalled', function () { adiado = null; falar('android', 'Pronto! O Diretrix já está na sua tela inicial.'); marcarInstalado(); });
+  function marcarInstalado() {
+    instaladoAndroid = true;
+    $$('[data-instalar="android"]').forEach(function (b) { b.textContent = 'Abrir o app'; });
   }
-  var MOLDURA = 'Nesta prévia dentro do Claude o navegador não permite instalar. Abra o site publicado para instalar.';
-  var ROTEIRO = {
-    android: function () { return ios ? 'Este aparelho é um iPhone: use os passos do Safari ao lado.' : android ? 'Abra o menu de três pontos do Chrome e escolha “Instalar app”.' : 'Abra este site no Chrome do seu celular Android.'; },
-    ios: function () { return ios ? 'Toque em Compartilhar, na barra do Safari, e depois em “Adicionar à Tela de Início”.' : 'Abra este site no Safari do iPhone.'; },
-    windows: function () { return windows ? 'Clique no ícone de instalar no fim da barra de endereço, ou abra o menu do navegador e escolha “Instalar Diretrix”. No Firefox não há instalação: use o Chrome ou o Edge.' : 'Abra este site no Chrome ou no Edge do seu computador Windows.'; },
-    mac: function () { return !mac ? 'Abra este site no Chrome, no Edge ou no Safari do seu Mac.' : safari ? 'No Safari, abra o menu Arquivo e escolha “Adicionar ao Dock”. Precisa do macOS Sonoma ou mais novo.' : 'Clique no ícone de instalar no fim da barra de endereço, ou abra o menu do navegador e escolha “Instalar Diretrix”.'; }
-  };
+  /* Chrome no Android informa se o app já está instalado neste aparelho */
+  if (navigator.getInstalledRelatedApps) {
+    navigator.getInstalledRelatedApps().then(function (apps) { if (apps && apps.length) marcarInstalado(); }).catch(function () { });
+  }
+
   $$('[data-instalar]').forEach(function (b) {
-    var msg = b.parentNode.querySelector('.msg');
     b.addEventListener('click', function () {
       var alvo = b.dataset.instalar;
-      if (instalado) { msg.textContent = 'O Diretrix já está instalado neste aparelho.'; return; }
-      if (emMoldura) { msg.textContent = MOLDURA; return; }
-      var pedeNavegador = alvo !== 'ios' && !(alvo === 'mac' && safari);
-      if (adiado && pedeNavegador) {
-        adiado.prompt();
-        adiado.userChoice.then(function (r) { msg.textContent = r.outcome === 'accepted' ? ONDE() : 'Instalação cancelada. Você pode tentar de novo quando quiser.'; });
-        adiado = null; return;
+      if (emMoldura) { ir('so-' + alvo); falar(alvo, 'Nesta prévia dentro do Claude o navegador não permite instalar. Abra o site publicado no celular.'); return; }
+      if (alvo === 'android') {
+        if (instaladoAndroid) { location.href = 'app/index.html'; return; }
+        if (adiado) {
+          adiado.prompt();
+          adiado.userChoice.then(function (r) { falar('android', r.outcome === 'accepted' ? 'Pronto! O Diretrix já está na sua tela inicial.' : 'Instalação cancelada. Você pode tentar de novo quando quiser.'); });
+          adiado = null; return;
+        }
+        ir('so-android');
+        falar('android', ios ? 'Este aparelho é um iPhone: use “Instalar no iPhone”.'
+          : dentroDeApp ? 'Você está no navegador de outro app. Abra este link no Chrome para instalar.'
+          : android ? 'Abra o menu de três pontos do Chrome e escolha “Instalar app”. Se o Diretrix já estiver instalado, procure a coruja na tela inicial.'
+          : 'Abra este site no Chrome do seu celular Android.');
+        return;
       }
-      msg.textContent = ROTEIRO[alvo]();
+      if (!ios) { ir('so-ios'); falar('ios', 'Abra este site no Safari do iPhone para instalar.'); return; }
+      if (dentroDeApp) { ir('so-ios'); falar('ios', 'Você está no navegador de outro app. Toque em ••• e escolha “Abrir no Safari” para instalar.'); return; }
+      if (iosSemSafari) falar('ios', 'Funciona melhor pelo Safari. Se usar o Chrome, toque em Compartilhar e em “Adicionar à Tela de Início”.');
+      guia.hidden = false; $('#guia-ok').focus();
     });
   });
-  if (instalado) $$('.so .msg').forEach(function (m) { m.textContent = ONDE(); });
+  $('#guia-ok').addEventListener('click', function () { guia.hidden = true; });
+  guia.addEventListener('click', function (e) { if (e.target === guia) guia.hidden = true; });
+
   if ('serviceWorker' in navigator && location.protocol === 'https:' && !emMoldura) {
     try { navigator.serviceWorker.register('sw.js').catch(function () { }); } catch (e) { }
   }

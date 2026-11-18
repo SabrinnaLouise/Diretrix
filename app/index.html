@@ -90,10 +90,10 @@ svg{width:20px;height:20px;flex:none}
 .brand{display:flex;align-items:center;gap:10px}
 .brand img{width:40px;height:40px;border-radius:10px;background:var(--petrol);object-fit:cover;object-position:50% 20%;padding-top:3px}
 .brand img.logo{width:auto;height:30px;border-radius:0;background:none;padding:0;object-fit:contain}
-.brand .sobre-escuro{display:none}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .brand .sobre-claro{display:none}:root:not([data-theme="light"]) .brand .sobre-escuro{display:block}}
-:root[data-theme="dark"] .brand .sobre-claro{display:none}
-:root[data-theme="dark"] .brand .sobre-escuro{display:block}
+.sobre-escuro{display:none}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .sobre-claro{display:none}:root:not([data-theme="light"]) .sobre-escuro{display:block}}
+:root[data-theme="dark"] .sobre-claro{display:none}
+:root[data-theme="dark"] .sobre-escuro{display:block}
 .brand b{font-family:var(--display);font-size:1.3rem;letter-spacing:-.02em}
 .brand b i{font-style:normal;color:var(--gold)}
 .brand .plano{margin-left:auto;font-size:.76rem;font-weight:700;color:var(--muted);border:1px solid var(--line);border-radius:6px;padding:3px 8px}
@@ -119,6 +119,8 @@ button.row:hover,a.row:hover{background:var(--surface-2)}
 .row.cat{border-left:3px solid var(--emerald)}
 .row.cat.restaurantes{border-left-color:var(--plum)}
 .row.cat.compras{border-left-color:var(--gold)}
+.row.cat.bancos{border-left-color:var(--petrol)}
+.row.cat.telecom{border-left-color:var(--muted)}
 .box{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px}
 .box ul{margin:0}
 .chips{display:flex;flex-wrap:wrap;gap:8px}
@@ -204,10 +206,10 @@ button.row:hover,a.row:hover{background:var(--surface-2)}
 .disc{font-size:.72rem;color:var(--muted);text-align:center;line-height:1.35}
 
 /* histórico (gaveta lateral) */
-#drawer{position:absolute;inset:0;z-index:15;background:rgba(8,21,18,.5);display:flex}
+#drawer{position:absolute;inset:0;z-index:15;background:rgba(8,21,18,.45);display:flex;justify-content:flex-end}
 #drawer[hidden]{display:none}
-#drawer .side{width:84%;max-width:340px;background:var(--bg);border-right:1px solid var(--line);display:flex;flex-direction:column;animation:lado .2s ease both}
-@keyframes lado{from{transform:translateX(-24px);opacity:.6}to{transform:none;opacity:1}}
+#drawer .side{width:84%;max-width:340px;background:var(--bg);border-left:1px solid var(--line);display:flex;flex-direction:column;animation:lado .2s ease both}
+@keyframes lado{from{transform:translateX(24px);opacity:.6}to{transform:none;opacity:1}}
 #drawer .hd{display:flex;align-items:center;gap:8px;padding:12px 12px 12px 16px;border-bottom:1px solid var(--line)}
 #drawer .hd h3{flex:1;font-size:1.05rem}
 #drawer .lst{flex:1;overflow-y:auto}
@@ -215,8 +217,33 @@ button.row:hover,a.row:hover{background:var(--surface-2)}
 .conv>button:first-child{flex:1;min-width:0;padding:13px 4px 13px 16px}
 .conv b{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:600}
 .conv span{font-size:.8rem;color:var(--muted)}
-.conv.on{background:var(--surface-2)}
+.conv.on{background:var(--surface-2);box-shadow:inset 3px 0 0 var(--emerald)}
 #drawer .ft{padding:12px 16px;border-top:1px solid var(--line);display:flex;flex-direction:column;gap:8px}
+#drawer .ft.topo{border-top:0;border-bottom:1px solid var(--line)}
+.conv-btn{position:relative}
+.conv-btn i{position:absolute;top:4px;right:2px;font-style:normal;font-size:.62rem;font-weight:700;min-width:16px;height:16px;line-height:16px;border-radius:8px;background:var(--emerald);color:var(--on-emerald);text-align:center;padding:0 3px}
+.conv-btn i:empty{display:none}
+.chat .top h2{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+/* abertura */
+#splash{position:fixed;inset:0;z-index:50;background:var(--bg);display:grid;place-items:center;transition:opacity .35s ease}
+#splash.sai{opacity:0;pointer-events:none}
+.sp-logo{position:relative;width:min(66vw,280px);aspect-ratio:600/153;animation:surge .45s ease both}
+.sp-logo>img{position:absolute;inset:0;width:100%;height:100%}
+.sp-oculos{position:absolute;left:71.667%;top:0;width:15%;height:34.64%;transform-origin:50% 55%;animation:oculos 2s .3s cubic-bezier(.3,.7,.3,1) both}
+.sp-oculos img{position:absolute;inset:0;width:100%;height:100%}
+.sp-oculos .pupila{transform-origin:50% 50%;animation:pisca 2s .3s both}
+@keyframes surge{from{opacity:0;transform:scale(.96)}to{opacity:1;transform:none}}
+@keyframes oculos{0%{transform:translateY(-420%);opacity:0}6%{opacity:1}28%{transform:translateY(0) rotate(0)}34%{transform:translateY(-16%) rotate(0)}40%{transform:translateY(0) rotate(0)}74%{transform:translateY(0) rotate(360deg)}100%{transform:translateY(0) rotate(360deg);opacity:1}}
+@keyframes pisca{0%,80%,92%,100%{transform:scaleY(1)}86%{transform:scaleY(.08)}}
+#splash.calmo .sp-logo,#splash.calmo .sp-oculos,#splash.calmo .pupila{animation:none}
+
+/* tutorial guiado */
+#tour{position:absolute;inset:0;z-index:40}
+#tour .furo{position:absolute;border-radius:14px;box-shadow:0 0 0 9999px rgba(8,21,18,.66);outline:2px solid var(--gold-bright);transition:all .25s ease;pointer-events:none}
+#tour .dica{position:absolute;left:16px;right:16px;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:6px}
+#tour .dica h3{font-size:1.1rem}
+#tour .acoes{display:flex;justify-content:space-between;gap:8px;margin-top:6px}
 
 /* checklist */
 .check{display:flex;gap:12px;align-items:flex-start;padding:13px 16px;width:100%}
@@ -268,6 +295,12 @@ button.row:hover,a.row:hover{background:var(--surface-2)}
 </style>
 </head>
 <body>
+<div id="splash" aria-hidden="true">
+  <div class="sp-logo">
+    <img class="sobre-claro" src="img/splash-logo.png" alt=""><img class="sobre-escuro" src="img/splash-logo-claro.png" alt="">
+    <div class="sp-oculos"><img src="img/splash-aro.png" alt=""><img class="pupila sobre-claro" src="img/splash-pupila.png" alt=""><img class="pupila sobre-escuro" src="img/splash-pupila-claro.png" alt=""></div>
+  </div>
+</div>
 <div id="app">
   <main id="view" aria-live="polite"></main>
   <nav id="tabs" aria-label="Navegação principal" hidden></nav>

@@ -35,5 +35,14 @@
       "purpose": "maskable"
     }
   ],
-  "id": "diretrix"
+  "id": "diretrix",
+  "related_applications": [
+    {
+      "platform": "webapp",
+      "url": "https://sabrinnalouise.github.io/Diretrix/manifest.webmanifest"
+    }
+  ],
+  "launch_handler": {
+    "client_mode": "navigate-existing"
+  }
 }

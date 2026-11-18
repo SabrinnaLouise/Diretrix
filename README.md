@@ -44,10 +44,11 @@ E reclamar funciona: em 2025 o Consumidor.gov.br finalizou **2.328.863** reclama
 
 | Recurso | Como funciona |
 | --- | --- |
-| **Biblioteca de direitos** | 18 situações em 3 categorias, sem cadastro. |
+| **Biblioteca de direitos** | 30 situações em 5 categorias, sem cadastro. |
 | **Lei em linguagem simples** | Cada artigo abre um painel com explicação, link oficial e data de revisão. |
-| **Trixie** | Assistente guiada com histórico de conversas, envio de fotos e documentos. |
+| **Trixie** | Assistente guiada; cada conversa ganha um tema automático e fica no painel de conversas, à direita. Aceita fotos e documentos. |
 | **Meu próximo passo** | Checklist, canais oficiais e uma mensagem pronta para enviar à empresa. |
+| **Primeira vez** | Abertura animada com a logo e um tutorial que mostra onde fica cada coisa (dá para sair a qualquer momento). |
 | **Planos** | Gratuito e Premium, com limites diferentes de envio (sem cobrança no protótipo). |
 | **Acessibilidade** | Modo claro e escuro, tamanho de fonte, contraste e menos animações. |
 
@@ -58,6 +59,8 @@ E reclamar funciona: em 2025 o Consumidor.gov.br finalizou **2.328.863** reclama
 | 01 | **Aeroportos** | Atraso e cancelamento de voo, bagagem, embarque negado, reembolso |
 | 02 | **Restaurantes** | Taxa de serviço, couvert, consumação mínima, perda de comanda |
 | 03 | **Compras on-line e presenciais** | Arrependimento, troca, defeito, atraso na entrega |
+| 04 | **Bancos e cartões** | Tarifas, golpe no Pix, compra não reconhecida, nome negativado |
+| 05 | **Telefonia e internet** | Cancelamento, fatura indevida, fidelidade, internet lenta |
 
 ## Como instalar
 
@@ -67,14 +70,13 @@ O Diretrix é um app web instalável (PWA): não precisa de loja de aplicativos.
 
 | Aparelho | Navegador | Passos |
 | --- | --- | --- |
-| **Android** | Chrome | Abra o site e toque em **Instalar no Android**. |
-| **iPhone** | Safari | Toque em **Compartilhar** e depois em **Adicionar à Tela de Início**. |
-| **Windows** | Chrome ou Edge | Abra o site e clique em **Instalar no Windows**. |
-| **Mac** | Chrome ou Edge | Abra o site e clique em **Instalar no Mac**. |
-| **Mac** | Safari (macOS Sonoma ou mais novo) | Menu **Arquivo** → **Adicionar ao Dock**. |
+| **Android** | Chrome | Abra o site e toque em **Instalar no Android**. Se já estiver instalado, o botão vira **Abrir o app**. |
+| **iPhone** | Safari | Toque em **Compartilhar** (no iOS 26, em **•••** e depois **Compartilhar**), depois em **Adicionar à Tela de Início**, e deixe ligada a opção **Abrir como app web**. |
+
+Quando o Diretrix é aberto pelo ícone da tela inicial, ele entra direto no app.
 
 <p align="center">
-  <img src="docs/instalacao.jpg" alt="Seção de instalação do site, com opções para PC e celular" width="720">
+  <img src="docs/instalacao.png" alt="Seção de instalação do site para Android e iPhone" width="300">
 </p>
 
 ## Estrutura do projeto
@@ -114,6 +116,10 @@ Abra <http://localhost:8000>. O protótipo fica em <http://localhost:8000/app/>.
 - [Decreto nº 7.962/2013 (comércio eletrônico)](https://www.planalto.gov.br/ccivil_03/_ato2011-2014/2013/decreto/d7962.htm)
 - [ANAC: direitos dos passageiros](https://www.gov.br/anac/pt-br/assuntos/passageiros)
 - [Consumidor.gov.br](https://www.consumidor.gov.br/)
+- [Resolução CMN nº 3.919/2010 (tarifas bancárias)](https://normativos.bcb.gov.br/Lists/Normativos/Attachments/49514/Res_3919_v7_P.pdf)
+- [Banco Central: Pix](https://www.bcb.gov.br/estabilidadefinanceira/pix)
+- [Súmulas do STJ](https://scon.stj.jus.br/SCON/sumstj/)
+- [Anatel: consumidor](https://www.gov.br/anatel/pt-br/consumidor)
 
 Cada conteúdo do app mostra se está **verificado**, **pendente de revisão** ou **desatualizado**.
 
@@ -124,7 +130,7 @@ Cada conteúdo do app mostra se está **verificado**, **pendente de revisão** o
 - Trixie guiada com histórico, fotos e documentos
 - Meu próximo passo, checklist e gerador de mensagem
 - Planos Gratuito e Premium (simulação, sem pagamento)
-- Site com instalação para Android, iPhone, Windows e Mac
+- Site com instalação para Android e iPhone
 
 **Próximos passos**
 - Conectar uma IA para perguntas livres e leitura de documentos

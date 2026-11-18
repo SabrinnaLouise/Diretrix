@@ -23,6 +23,7 @@
     enviar: '<path d="M5 12h14M13 6l6 6-6 6"/>',
     x: '<path d="M6 6l12 12M18 6L6 18"/>', mais: '<path d="M12 5v14M5 12h14"/>',
     menu: '<path d="M4 7h16M4 12h16M4 17h10"/>',
+    conversas: '<path d="M4 5h11v8H8l-4 3zM9 16v1h7l4 3V9h-3"/>',
     camera: '<path d="M4 8h3.5L9 6h6l1.5 2H20v11H4z"/><circle cx="12" cy="13" r="3.2"/>',
     clipe: '<path d="M19 11.5l-7.2 7.2a4.2 4.2 0 0 1-6-6L13 5.6a2.8 2.8 0 0 1 4 4l-7.1 7a1.4 1.4 0 0 1-2-2l6.4-6.3"/>',
     som: '<path d="M4 10v4h3l5 4V6l-5 4zM16 9a4 4 0 0 1 0 6"/>'
@@ -116,16 +117,16 @@
 
   /* ---------- histórico de conversas ---------- */
   function abrirHistorico() {
-    const convs = T.conversas.filter(c => T.iniciada(c)).sort((a, b) => b.ts - a.ts);
-    const data = ts => new Date(ts).toLocaleDateString('pt-BR', { day: '2-digit', month: 'short' });
-    drawer.innerHTML = `<aside class="side" aria-label="Histórico de conversas">
-      <div class="hd"><h3>Conversas</h3><button class="ibtn" aria-label="Fechar histórico" ${h(fecharHistorico)}>${ic('x')}</button></div>
-      <div class="lst">${convs.length ? convs.map(c => `<div class="conv ${c.id === T.atualId ? 'on' : ''}">
-          <button ${h(() => { T.retomar(c.id); render(); })}><b>${esc(c.titulo)}</b><span>${data(c.ts)} · ${c.msgs.length} mensagens</span></button>
-          <button class="ibtn" aria-label="Apagar conversa" ${h(() => { T.apagar(c.id); if (!T.temConversa()) T.abrir('normal'); render(); abrirHistorico(); })}>${ic('x')}</button></div>`).join('')
-        : `<div class="empty"><img src="${IMG.ajuda}" alt=""><p class="muted small">Suas conversas aparecem aqui depois da primeira mensagem.</p></div>`}</div>
-      <div class="ft"><button class="btn pri sm" ${h(() => { T.abrir('normal'); render(); })}>${ic('mais')}Nova conversa</button>
-        <p class="small muted">Plano ${DX.plano().nome}: guarda as ${DX.plano().historico} conversas mais recentes, só neste aparelho.</p></div>
+    if (!drawer.hidden) return fecharHistorico();   // o mesmo botão abre e fecha
+    const convs = T.conversas.filter(c => T.iniciada(c) || c.id === T.atualId).sort((a, b) => b.ts - a.ts);
+    const quando = ts => { const d = new Date(ts), hoje = new Date(); return d.toDateString() === hoje.toDateString() ? 'Hoje, ' + d.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }) : d.toLocaleDateString('pt-BR', { day: '2-digit', month: 'short' }); };
+    drawer.innerHTML = `<aside class="side" aria-label="Conversas">
+      <div class="hd"><h3>Conversas</h3><button class="ibtn" aria-label="Fechar conversas" ${h(fecharHistorico)}>${ic('x')}</button></div>
+      <div class="ft topo"><button class="btn pri sm" ${h(() => { T.abrir('normal'); T.salvar(); render(); })}>${ic('mais')}Nova conversa</button></div>
+      <div class="lst">${convs.map(c => `<div class="conv ${c.id === T.atualId ? 'on' : ''}">
+          <button ${h(() => { T.retomar(c.id); render(); })}><b>${esc(c.titulo)}</b><span>${quando(c.ts)} · ${c.msgs.filter(m => m.de === 'u').length || 'nenhuma'} ${c.msgs.filter(m => m.de === 'u').length === 1 ? 'mensagem sua' : 'mensagens suas'}</span></button>
+          <button class="ibtn" aria-label="Apagar conversa ${esc(c.titulo)}" ${h(() => { T.apagar(c.id); if (!T.temConversa()) T.abrir('normal'); render(); abrirHistorico(); })}>${ic('x')}</button></div>`).join('')}</div>
+      <div class="ft"><p class="small muted">O tema de cada conversa é criado automaticamente. Plano ${DX.plano().nome}: guarda as ${DX.plano().historico} conversas mais recentes, só neste aparelho.</p></div>
     </aside>`;
     drawer.hidden = false;
   }
@@ -167,30 +168,16 @@
   const TELAS = {
 
     /* ----- Abertura e apresentação ----- */
-    onboarding(p) {
-      const fim = () => { store.data.onboard = true; store.save(); nav.stack = []; go('inicio'); };
-      if (!p.passo) return `<section class="onb">
+    onboarding() {
+      const entrar = comTour => { store.data.onboard = true; if (!comTour) store.data.tutorial = true; store.save(); nav.stack = []; go('inicio'); if (comTour) setTimeout(tutorial, 350); };
+      return `<section class="onb">
         <div class="art"><img src="${IMG.ola}" alt="Trixie, a coruja do Diretrix, acenando"></div>
         <div class="sheet">
           <h1>Bem-vindo ao Diretrix!</h1>
           <p class="muted">Conheça seus direitos e descubra o que fazer em situações do dia a dia.</p>
           <p class="quote">Oi! Eu sou a Trixie, sua assistente do Diretrix. Estou aqui para ajudar você a entender seus direitos de forma simples e descobrir por onde começar!</p>
-          <div class="dots"><i class="on"></i><i></i></div>
-          <button class="btn pri" ${h(() => { nav.stack = [{ name: 'onboarding', p: { passo: 1 } }]; render(); })}>Começar</button>
-          <button class="btn ghost" ${h(fim)}>Pular apresentação</button>
-        </div></section>`;
-      return `<section class="onb">
-        <div class="art"><img src="${IMG.chat}" alt="Trixie segurando um livro de leis" style="max-height:210px"></div>
-        <div class="sheet">
-          <h1>Como o Diretrix funciona</h1>
-          <div>
-            <div class="num"><i>1</i><div><b>Consultar</b><span>Encontre sua situação na biblioteca de direitos.</span></div></div>
-            <div class="num"><i>2</i><div><b>Entender</b><span>Leia a lei em linguagem simples, com a fonte oficial.</span></div></div>
-            <div class="num"><i>3</i><div><b>Agir</b><span>Siga um roteiro e prepare sua solicitação.</span></div></div>
-          </div>
-          <p class="small muted">O Diretrix oferece informação educativa. Não substitui a orientação de um profissional habilitado.</p>
-          <div class="dots"><i></i><i class="on"></i></div>
-          <button class="btn pri" ${h(fim)}>Entrar no Diretrix</button>
+          <button class="btn pri" ${h(() => entrar(true))}>Começar</button>
+          <button class="btn ghost" ${h(() => entrar(false))}>Pular apresentação</button>
         </div></section>`;
     },
 
@@ -214,7 +201,7 @@
         ['pointerdown', 'touchstart', 'wheel'].forEach(ev => car.addEventListener(ev, () => clearInterval(timerCar), { passive: true }));
         if (!store.data.semAnim && !matchMedia('(prefers-reduced-motion:reduce)').matches) timerCar = setInterval(() => ir((atual() + 1) % dots.length), 6000);
       });
-      const comuns = ['cancelamento-voo', 'extravio-bagagem', 'arrependimento', 'defeito', 'taxa-servico', 'atraso-entrega'];
+      const comuns = ['cancelamento-voo', 'golpe-pix', 'arrependimento', 'cancelar-plano', 'defeito', 'taxa-servico', 'extravio-bagagem'];
       return `<div class="pad">
         <div class="brand"><img class="logo sobre-claro" src="img/logo-diretrix.png" alt="Diretrix"><img class="logo sobre-escuro" src="img/logo-diretrix-claro.png" alt="Diretrix"><span class="plano">${DX.plano().nome}</span></div>
 
@@ -250,7 +237,7 @@
         <div id="res-inicio" class="stack"></div>
         <div id="resto-inicio" class="stack" style="gap:22px">
           <button class="btn pri" ${h(() => aba('direitos'))}>Explorar meus direitos</button>
-          <section class="stack"><h3 class="sec-t">Categorias</h3>${grupo(DX.CATEGORIAS.map(linhaCat))}</section>
+          <section class="stack" id="cats-inicio"><h3 class="sec-t">Categorias</h3>${grupo(DX.CATEGORIAS.map(linhaCat))}</section>
           <section class="stack"><h3 class="sec-t">Situações comuns</h3>
             <div class="hcar">${comuns.map(id => { const d = DX.direito(id), c = DX.categoria(d.cat); return `<button class="hcard" ${h(() => go('direito', { id }))}><span class="eyebrow">${c.curto || c.titulo}</span><b>${d.titulo}</b><span>${d.resumo}</span></button>`; }).join('')}</div>
           </section>
@@ -335,10 +322,10 @@
         `<div class="msg t">${m.html}${m.leis.length ? `<div class="fontes"><span class="eyebrow">Fontes</span>${m.leis.map(l => leiBtn(l, T.ctx)).join('')}</div>` : ''}</div>`;
       return `<div class="chat">
         <header class="top">${empilhado ? `<button class="ibtn" aria-label="Voltar" ${h(back)}>${ic('voltar')}</button>` : ''}
-          <button class="ibtn" aria-label="Histórico de conversas" title="Histórico" ${h(abrirHistorico)}>${ic('menu')}</button>
           <img src="${IMG.chat}" alt="Trixie">
-          <h2>Trixie<small>Guiada · sem IA generativa</small></h2>
-          <button class="ibtn" aria-label="Nova conversa" title="Nova conversa" ${h(() => { T.abrir('normal'); render(); })}>${ic('mais')}</button>
+          <h2>${esc(T.c.titulo)}<small>Trixie · guiada, sem IA generativa</small></h2>
+          <button class="ibtn" aria-label="Nova conversa" title="Nova conversa" ${h(() => { T.abrir('normal'); T.salvar(); render(); })}>${ic('mais')}</button>
+          <button class="ibtn conv-btn" aria-label="Abrir ou fechar conversas" title="Conversas" ${h(abrirHistorico)}>${ic('conversas')}<i>${T.conversas.filter(c => T.iniciada(c)).length || ''}</i></button>
         </header>
         <div class="msgs" id="msgs">
           <span class="modo">${rot}</span>
@@ -370,14 +357,6 @@
         el.setAttribute('aria-checked', f.includes(i));
         $('#prog').style.width = prog() + '%'; $('#prog-t').textContent = `${f.length} de ${d.passos.length}`;
       };
-      const buscarEmpresa = () => {
-        const nome = $('#emp-busca').value.trim(), out = $('#emp-res');
-        if (!nome) { out.innerHTML = `<p class="small muted">Digite o nome da empresa.</p>`; return; }
-        $('#sol-empresa').value = nome;
-        const e = DX.EMPRESAS.find(x => DX.norm(x.nome).includes(DX.norm(nome)));
-        out.innerHTML = e ? `<div class="box"><b>${esc(e.nome)}</b><p class="small">${esc(e.sac || '')}</p><p class="small muted">Verificado em ${esc(e.verificadoEm)}</p></div>` :
-          `<p class="note">Ainda não há contato oficial verificado para “${esc(nome)}” no Diretrix. Consulte o site oficial da empresa e use somente os canais divulgados lá.</p>`;
-      };
       const gerar = () => {
         const v = id => $(id).value.trim();
         const emp = v('#sol-empresa'), desc = v('#sol-desc'), dt = v('#sol-data'), sol = v('#sol-solucao');
@@ -401,11 +380,6 @@
           <div class="prog"><i id="prog" style="width:${prog()}%"></i></div>
           <p class="small muted">Ações que você pode considerar. Nenhum documento é exigido.</p>
           ${grupo(d.passos.map((x, i) => `<button class="check" role="checkbox" aria-checked="${feitos().includes(i)}" ${h((e, el) => marcar(i, el))}><i class="cb">${ic('check')}</i><span>${x}</span></button>`))}
-        </section>
-
-        <section class="stack"><h3 class="sec-t">Contatar a empresa</h3>
-          <div class="stack" style="flex-direction:row"><label class="search" style="flex:1;min-width:0">${ic('busca')}<input id="emp-busca" type="text" placeholder="Nome da empresa" aria-label="Nome da empresa"></label><button class="btn sec sm" ${h(buscarEmpresa)}>Buscar</button></div>
-          <div id="emp-res"><p class="small muted">O Diretrix mostra somente contatos oficiais verificados. Quando não houver, consulte o site oficial da empresa.</p></div>
         </section>
 
         <section class="stack"><h3 class="sec-t">Canais oficiais</h3>
@@ -466,7 +440,7 @@
             item('Excluir dados armazenados', () => abrirPainel('Excluir dados armazenados', `<p>Isso apaga deste aparelho suas preferências, o plano de teste, os checklists, as conversas com anexos e os contadores de uso. Não há dados seus em servidores do Diretrix.</p><button class="btn pri" ${h(() => { store.clear(); T.apagarTudo(); aplicarPrefs(); render(); toast('Dados apagados deste aparelho.'); })}>Excluir agora</button><button class="btn ghost" ${h(fecharPainel)}>Cancelar</button>`), 'Preferências, checklists, conversas e anexos')])}</section>
 
         <section class="stack"><h3 class="sec-t">Ajuda</h3>
-          ${grupo([item('Perguntas frequentes', info('faq')), item('Repetir tutorial', () => { nav.stack = []; go('onboarding'); })])}</section>
+          ${grupo([item('Perguntas frequentes', info('faq')), item('Repetir tutorial', () => { nav.stack = []; go('inicio'); setTimeout(tutorial, 300); })])}</section>
         <p class="small muted" style="text-align:center">Diretrix · protótipo · conteúdo revisado em ${DX.REVISAO}</p>
       </div>`;
     },
@@ -516,7 +490,62 @@
     faq: ['Perguntas frequentes', `<p><b>Preciso pagar para consultar meus direitos?</b><br>Não. A biblioteca, as explicações e as fontes oficiais são gratuitas.</p><p><b>A Trixie é uma inteligência artificial?</b><br>Neste protótipo, não. Ela segue fluxos guiados com conteúdo cadastrado.</p><p><b>A Trixie lê os documentos que eu envio?</b><br>Ainda não. Eles ficam guardados na conversa para você consultar.</p><p><b>O Diretrix envia minha reclamação?</b><br>Não. Ele ajuda a preparar a mensagem; o envio é feito por você, nos canais oficiais.</p><p><b>Posso confiar nas informações?</b><br>Cada conteúdo mostra a fonte oficial, a data de revisão e se está verificado. Em casos complexos, procure um profissional habilitado.</p>`]
   };
 
+  /* ---------- tutorial guiado: mostra onde fica cada coisa ---------- */
+  const PASSOS = [
+    { alvo: () => $('#q-inicio') && $('#q-inicio').closest('.search'), t: 'Busque sua dúvida', x: 'Escreva o que aconteceu, como “voo cancelado” ou “golpe no Pix”, e veja os direitos ligados ao caso.' },
+    { alvo: () => $('#car'), t: 'Destaques', x: 'Dados e atalhos rápidos. Deslize para o lado para ver os outros.' },
+    { alvo: () => $('#cats-inicio'), t: 'Categorias', x: 'Aeroportos, restaurantes, compras, bancos e telefonia. Toque em uma para ver as situações.' },
+    { alvo: () => tabs.children[1], t: 'Direitos', x: 'A biblioteca completa: cada situação com a lei explicada e a fonte oficial.' },
+    { alvo: () => tabs.children[2], t: 'Trixie', x: 'Converse com a Trixie. Suas conversas ficam guardadas no botão do canto direito do chat.' },
+    { alvo: () => tabs.children[3], t: 'Perfil', x: 'Plano, modo claro ou escuro, tamanho da letra e este tutorial de novo.' }
+  ];
+  function tutorial() {
+    if (nav.stack[nav.stack.length - 1].name !== 'inicio') { nav.stack = []; go('inicio'); }
+    clearInterval(timerCar);
+    const app = $('#app');
+    let tour = $('#tour'); if (tour) tour.remove();
+    tour = document.createElement('div'); tour.id = 'tour'; tour.setAttribute('role', 'dialog'); tour.setAttribute('aria-modal', 'true'); tour.setAttribute('aria-labelledby', 'tour-t');
+    tour.innerHTML = '<div class="furo"></div><div class="dica"><span class="eyebrow" id="tour-n"></span><h3 id="tour-t"></h3><p id="tour-x"></p><div class="acoes"><button class="btn ghost sm" id="tour-sair">Sair do tutorial</button><button class="btn pri sm" id="tour-ok">Próximo</button></div></div>';
+    app.appendChild(tour);
+    let i = 0;
+    const fim = () => { tour.remove(); store.data.tutorial = true; store.save(); };
+    const mostrar = () => {
+      const p = PASSOS[i], el = p.alvo();
+      if (!el) { i++; return i < PASSOS.length ? mostrar() : fim(); }
+      if (view.contains(el)) el.scrollIntoView({ block: 'center' });
+      requestAnimationFrame(() => {
+        const r = el.getBoundingClientRect(), a = app.getBoundingClientRect(), m = 6;
+        const furo = tour.querySelector('.furo'), dica = tour.querySelector('.dica');
+        Object.assign(furo.style, { top: (r.top - a.top - m) + 'px', left: (r.left - a.left - m) + 'px', width: (r.width + m * 2) + 'px', height: (r.height + m * 2) + 'px' });
+        $('#tour-n').textContent = (i + 1) + ' de ' + PASSOS.length;
+        $('#tour-t').textContent = p.t; $('#tour-x').textContent = p.x;
+        $('#tour-ok').textContent = i === PASSOS.length - 1 ? 'Concluir' : 'Próximo';
+        const embaixo = (r.top - a.top) + r.height / 2 > a.height / 2;
+        dica.style.top = embaixo ? 'auto' : (r.bottom - a.top + m + 12) + 'px';
+        dica.style.bottom = embaixo ? (a.bottom - r.top + m + 12) + 'px' : 'auto';
+        $('#tour-ok').focus();
+      });
+    };
+    $('#tour-ok').addEventListener('click', () => { i++; i < PASSOS.length ? mostrar() : fim(); });
+    $('#tour-sair').addEventListener('click', fim);
+    tour.addEventListener('keydown', e => { if (e.key === 'Escape') fim(); });
+    mostrar();
+  }
+
+  /* ---------- abertura: logo no centro, os óculos caem no i, giram e piscam ---------- */
+  function abertura(depois) {
+    const sp = $('#splash');
+    if (!sp) return depois();
+    const calmo = store.data.semAnim || matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (calmo) sp.classList.add('calmo');
+    let foi = false;
+    const sair = () => { if (foi) return; foi = true; sp.classList.add('sai'); setTimeout(() => { sp.remove(); depois(); }, 380); };
+    sp.addEventListener('click', sair);
+    setTimeout(sair, calmo ? 700 : 2700);
+  }
+
   /* ---------- início ---------- */
   store.load(); T.carregar(); aplicarPrefs();
   go(store.data.onboard ? 'inicio' : 'onboarding');
+  abertura(() => { if (store.data.onboard && !store.data.tutorial) tutorial(); });
 })(window.DX);

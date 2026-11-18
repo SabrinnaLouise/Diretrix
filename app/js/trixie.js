@@ -33,7 +33,9 @@
     },
     carregar() {
       try { this.conversas = JSON.parse(localStorage.getItem(CHAVE) || '[]').map(c => ({ ...c, msgs: c.msgs.map(m => ({ ...m, chips: [], leis: m.leis || [] })) })); } catch (e) { this.conversas = []; }
-      this.atualId = null;
+      const ult = this.conversas.slice().sort((a, b) => b.ts - a.ts)[0];
+      this.atualId = ult ? ult.id : null;   // reabre a conversa mais recente
+      if (ult) this.retomar(ult.id);
     },
     retomar(id) {
       this.conversas = this.conversas.filter(c => this.iniciada(c));
@@ -93,7 +95,7 @@
       } else if (modo === 'rapido') {
         this.problemaAgora();
       } else {
-        this.diz('Oi! Eu sou a Trixie. Explico direitos do consumidor em Aeroportos, Restaurantes e Compras. Escolha um tema ou escreva sua dúvida.',
+        this.diz('Oi! Eu sou a Trixie. Explico direitos do consumidor em ' + DX.CATEGORIAS.map(c => c.curto || c.titulo).join(', ').replace(/, ([^,]*)$/, ' e $1') + '. Escolha um tema ou escreva sua dúvida.',
           [...this.chipsCategorias(), { t: 'Tenho um problema agora', f: () => { this.modo = 'rapido'; this.problemaAgora(); } }]);
       }
     },

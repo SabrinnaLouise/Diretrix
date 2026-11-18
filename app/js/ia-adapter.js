@@ -26,7 +26,7 @@
       return DX.DIREITOS.map(d => {
         let p = 0;
         d.tags.forEach(tag => {
-          const partes = tag.split('+');
+          const partes = DX.norm(tag).split('+');
           if (partes.every(t => q.includes(t))) p += partes.length;
         });
         if (q.includes(DX.norm(d.titulo))) p += 3;
