@@ -216,7 +216,7 @@
       });
       const comuns = ['cancelamento-voo', 'extravio-bagagem', 'arrependimento', 'defeito', 'taxa-servico', 'atraso-entrega'];
       return `<div class="pad">
-        <div class="brand"><img src="${IMG.icone}" alt="Ícone do Diretrix: a coruja Trixie"><b>Diretri<i>x</i></b><span class="plano">${DX.plano().nome}</span></div>
+        <div class="brand"><img class="logo sobre-claro" src="img/logo-diretrix.png" alt="Diretrix"><img class="logo sobre-escuro" src="img/logo-diretrix-claro.png" alt="Diretrix"><span class="plano">${DX.plano().nome}</span></div>
 
         <section class="stack" aria-label="Destaques">
           <div class="car" id="car">

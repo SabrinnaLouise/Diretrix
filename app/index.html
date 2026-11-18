@@ -89,6 +89,11 @@ svg{width:20px;height:20px;flex:none}
 .ibtn:hover{background:var(--surface-2)}
 .brand{display:flex;align-items:center;gap:10px}
 .brand img{width:40px;height:40px;border-radius:10px;background:var(--petrol);object-fit:cover;object-position:50% 20%;padding-top:3px}
+.brand img.logo{width:auto;height:30px;border-radius:0;background:none;padding:0;object-fit:contain}
+.brand .sobre-escuro{display:none}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .brand .sobre-claro{display:none}:root:not([data-theme="light"]) .brand .sobre-escuro{display:block}}
+:root[data-theme="dark"] .brand .sobre-claro{display:none}
+:root[data-theme="dark"] .brand .sobre-escuro{display:block}
 .brand b{font-family:var(--display);font-size:1.3rem;letter-spacing:-.02em}
 .brand b i{font-style:normal;color:var(--gold)}
 .brand .plano{margin-left:auto;font-size:.76rem;font-weight:700;color:var(--muted);border:1px solid var(--line);border-radius:6px;padding:3px 8px}
