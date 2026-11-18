@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Diretrix</title>
+<meta name="description" content="Diretrix: conheça seus direitos de consumidor com a Trixie e instale o app no celular.">
+<meta name="theme-color" content="#0C332D">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" href="icons/favicon-48.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* Plano: paleta da Trixie (petróleo, esmeralda, ameixa, dourado, creme).
+   Layout: landing longa em coluna de 1080px, seções separadas por linhas finas,
+   numeração em tipografia, superfícies planas. Só o hero se move com a rolagem. */
+:root{
+  --bg:#F6EEE1; --surface:#FFFCF6; --surface-2:#EDE2CF; --line:#DDCFB8;
+  --ink:#1B2B27; --muted:#5A6863;
+  --emerald:#1C7862; --on-emerald:#FFFFFF; --plum:#7A2047; --gold:#D79C2E; --gold-ink:#75500C;
+  --petrol:#0C332D; --petrol-2:#124B42; --on-petrol:#F6EEE1; --gold-bright:#F2C058; --mint:#6FD0B2; --rose:#D0679A;
+  --note-bg:#FBEFD3;
+  --display:'Bricolage Grotesque','Figtree',system-ui,sans-serif;
+  --body:'Figtree',system-ui,-apple-system,'Segoe UI',sans-serif;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#0E1F1C; --surface:#152925; --surface-2:#1D3630; --line:#294740;
+    --ink:#F4EBDD; --muted:#A8B8B1;
+    --emerald:#48B897; --on-emerald:#06201A; --plum:#D0679A; --gold:#E7B450; --gold-ink:#F1CB7E;
+    --petrol:#0A2823; --petrol-2:#103F38; --note-bg:#3B3018;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0E1F1C; --surface:#152925; --surface-2:#1D3630; --line:#294740;
+  --ink:#F4EBDD; --muted:#A8B8B1;
+  --emerald:#48B897; --on-emerald:#06201A; --plum:#D0679A; --gold:#E7B450; --gold-ink:#F1CB7E;
+  --petrol:#0A2823; --petrol-2:#103F38; --note-bg:#3B3018;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{scroll-padding-top:72px}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);line-height:1.55;-webkit-font-smoothing:antialiased}
+h1,h2,h3{font-family:var(--display);line-height:1.1;margin:0;text-wrap:balance;letter-spacing:-.015em}
+p{margin:0} img{max-width:100%;display:block}
+a{color:var(--emerald)}
+button{font:inherit;color:inherit;cursor:pointer;border:0;background:none;padding:0}
+:focus-visible{outline:2px solid var(--gold);outline-offset:3px;border-radius:6px}
+.wrap{max-width:1080px;margin:0 auto;padding-inline:20px}
+.sec{padding:72px 0;border-top:1px solid var(--line)}
+.kicker{font-size:.76rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--emerald)}
+.sec h2{font-size:clamp(1.75rem,5vw,2.7rem);margin-top:10px;max-width:22ch}
+.lead{color:var(--muted);max-width:62ch;margin-top:12px;font-size:1.05rem}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:11px 20px;border-radius:12px;font-weight:700;text-decoration:none;text-align:center}
+.btn.pri{background:var(--emerald);color:var(--on-emerald)}
+.btn.gold{background:var(--gold-bright);color:#3A2606}
+.btn.out{border:1.5px solid var(--emerald);color:var(--emerald)}
+.btn.ghost{border:1.5px solid rgba(246,238,225,.55);color:var(--on-petrol)}
+.btn.sm{min-height:40px;padding:8px 14px;font-size:.92rem}
+
+/* aparece ao rolar: parte de um estado já visível */
+.js-rv .rv{opacity:.3;transform:translateY(18px);transition:opacity .6s ease,transform .6s ease}
+.js-rv .rv.in{opacity:1;transform:none}
+
+/* 1. cabeçalho */
+.bar{position:fixed;inset:0 0 auto 0;z-index:20;background:var(--bg);border-bottom:1px solid var(--line)}
+.bar .wrap{display:flex;align-items:center;gap:14px;height:60px}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--ink);margin-right:auto}
+.logo img{height:30px;width:auto;display:block}
+.logo .sobre-escuro{display:none}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .bar .logo .sobre-claro{display:none}:root:not([data-theme="light"]) .bar .logo .sobre-escuro{display:block}}
+:root[data-theme="dark"] .bar .logo .sobre-claro{display:none}
+:root[data-theme="dark"] .bar .logo .sobre-escuro{display:block}
+footer .logo .sobre-claro{display:none}
+footer .logo .sobre-escuro{display:block}
+.nav{display:none;gap:22px}
+.nav a{color:var(--ink);text-decoration:none;font-weight:600;font-size:.95rem}
+.nav a:hover{color:var(--emerald)}
+.tbtn{font-size:.86rem;font-weight:700;border:1px solid var(--line);border-radius:10px;padding:8px 12px;min-height:40px}
+.bar .inst{display:none}
+#menu{display:none;flex-direction:column;border-top:1px solid var(--line);background:var(--bg);padding:6px 20px 16px}
+#menu.aberto{display:flex}
+#menu a{padding:13px 0;border-bottom:1px solid var(--line);color:var(--ink);text-decoration:none;font-weight:600}
+#menu .btn{margin-top:14px}
+@media (min-width:900px){.nav{display:flex}.bar .inst{display:inline-flex}#btn-menu{display:none}#menu{display:none!important}}
+
+/* 2. hero com fundo ligado à rolagem */
+#hero{height:380vh;position:relative;background:var(--petrol)}
+.stage{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden;color:var(--on-petrol);background:radial-gradient(120% 90% at 78% 62%,var(--petrol-2),var(--petrol) 70%)}
+.tint{position:absolute;inset:0;background:radial-gradient(90% 70% at 80% 70%,#571632,transparent 70%);opacity:0}
+.ring{position:absolute;border:1.5px solid rgba(242,192,88,.3);border-radius:50%;right:-18vmin;bottom:-22vmin;will-change:transform}
+.r1{width:86vmin;height:86vmin}
+.r2{width:118vmin;height:118vmin;right:-34vmin;bottom:-38vmin;border-style:dashed;border-color:rgba(111,208,178,.26)}
+.folha{position:absolute;padding:7px 11px;border-radius:8px;border:1px solid rgba(246,238,225,.2);font-size:.78rem;font-weight:700;color:rgba(246,238,225,.5);white-space:nowrap;will-change:transform}
+.folha{display:none}
+.ator{position:absolute;right:-2%;bottom:0;width:min(86vw,46svh);aspect-ratio:1;z-index:1}
+.pose{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;object-position:50% 100%;transform-origin:50% 92%;opacity:0;will-change:transform,opacity}
+.pose:first-child{opacity:1}
+#filme{position:absolute;inset:0;width:100%;height:100%;display:none}
+.ator.video #filme{display:block}
+.ator.video .pose{display:none}
+.copy{position:relative;z-index:2;padding:88px 20px 0;max-width:1080px;margin:0 auto;display:flex;flex-direction:column;gap:14px;align-items:flex-start}
+.copy h1{font-size:clamp(2rem,7.6vw,4.1rem);font-weight:800;max-width:14ch}
+.copy h1 em{font-style:normal;color:var(--gold-bright)}
+.copy p{font-size:1.05rem;max-width:36ch;opacity:.9}
+.acts{display:flex;flex-wrap:wrap;gap:10px}
+@media (max-width:480px){.copy .btn{min-height:44px;padding:9px 14px;font-size:.92rem}}
+.scrub{position:absolute;left:20px;right:20px;bottom:18px;height:3px;background:rgba(246,238,225,.18);border-radius:2px;z-index:2}
+.scrub i{display:block;height:100%;width:0;background:var(--gold-bright);border-radius:2px}
+@media (min-width:900px){
+  .ator{right:1%;width:min(40vw,74svh)}
+  .copy{padding-top:0;height:100%;justify-content:center}
+  .copy>*{max-width:52%}
+  .copy h1{max-width:13ch}
+}
+@media (prefers-reduced-motion:reduce){
+  #hero{height:auto}
+  .stage{position:relative;height:auto;min-height:640px;padding-bottom:300px}
+  .scrub{display:none}
+  .js-rv .rv{opacity:1;transform:none;transition:none}
+}
+
+/* 3. problema */
+.problema{padding:84px 0}
+.problema p{font-family:var(--display);font-weight:700;font-size:clamp(1.6rem,5.2vw,3rem);line-height:1.15;max-width:22ch;letter-spacing:-.015em;text-wrap:balance}
+.problema p span{color:var(--muted)}
+
+/* 4. antes e depois */
+.ad{display:grid;gap:16px;margin-top:32px}
+.col{border:1px solid var(--line);border-radius:14px;background:var(--surface);overflow:hidden}
+.col h3{font-size:1.1rem;padding:16px 20px;border-bottom:1px solid var(--line)}
+.col.sem h3{color:var(--muted)}
+.col.com{border:2px solid var(--emerald)}
+.col.com h3{background:var(--emerald);color:var(--on-emerald);border-bottom:0}
+.col ul{list-style:none;margin:0;padding:0}
+.col li{padding:16px 20px;display:flex;gap:14px;align-items:baseline}
+.col li+li{border-top:1px solid var(--line)}
+.col li i{font-style:normal;font-family:var(--display);font-weight:700;font-size:.9rem;color:var(--muted);font-variant-numeric:tabular-nums}
+.col.sem li{color:var(--muted)}
+.col.com li i{color:var(--emerald)}
+@media (min-width:820px){.ad{grid-template-columns:1fr 1fr}.col ul{display:grid;grid-template-rows:repeat(4,1fr);height:calc(100% - 58px)}}
+
+/* 5. números */
+.pesq{margin-top:32px;border:1px solid var(--line);border-radius:14px;background:var(--surface);padding:24px}
+.pesq .q{font-weight:700;font-size:1.08rem;max-width:44ch}
+.barras{display:grid;gap:14px;margin-top:20px}
+.b{display:grid;grid-template-columns:1fr auto;gap:4px 12px;align-items:baseline}
+.b span{font-weight:600}
+.b output{font-family:var(--display);font-weight:800;font-size:1.3rem;font-variant-numeric:tabular-nums}
+.b .trilho{grid-column:1/-1;height:14px;border-radius:4px;background:var(--surface-2);overflow:hidden}
+.b .trilho i{display:block;height:100%;width:var(--w);background:var(--c);border-radius:4px;transition:width 1.2s cubic-bezier(.2,.7,.2,1)}
+.js-rv .barras:not(.in) .trilho i{width:0}
+.nota{font-size:.86rem;color:var(--muted);margin-top:16px}
+.nums{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));border:1px solid var(--line);border-radius:14px;overflow:hidden;background:var(--surface);margin-top:16px}
+.nums>div{padding:22px;border-right:1px solid var(--line);border-bottom:1px solid var(--line);margin:0 -1px -1px 0}
+.nums b{display:block;font-family:var(--display);font-size:2.05rem;font-weight:800;color:var(--emerald);font-variant-numeric:tabular-nums;letter-spacing:-.02em;line-height:1.1}
+.nums span{font-size:.94rem;color:var(--muted)}
+.nums .aconf{background:repeating-linear-gradient(135deg,transparent 0 10px,var(--surface-2) 10px 11px)}
+.nums .aconf b{color:var(--gold-ink);font-size:1.25rem;line-height:1.3}
+.sub-t{font-size:1.15rem;margin-top:36px}
+
+/* 6. categorias */
+.cats{display:grid;gap:16px;margin-top:32px}
+.cat{border:1px solid var(--line);border-radius:14px;background:var(--surface);padding:22px;display:flex;flex-direction:column;gap:10px;border-top:3px solid var(--k)}
+.cat .n{font-family:var(--display);font-weight:800;font-size:2.4rem;line-height:1;color:var(--k);font-variant-numeric:tabular-nums}
+.cat h3{font-size:1.25rem}
+.cat ul{margin:4px 0 0;padding:0;list-style:none;color:var(--muted)}
+.cat li{padding:8px 0;border-top:1px solid var(--line)}
+@media (min-width:820px){.cats{grid-template-columns:repeat(3,1fr)}}
+
+/* 7. etapas */
+.etapas{display:grid;gap:0;margin-top:32px;counter-reset:e}
+.etapa{padding:22px 0;border-top:2px solid var(--ink);display:flex;flex-direction:column;gap:8px}
+.etapa .n{font-family:var(--display);font-weight:800;font-size:1rem;color:var(--gold-ink);letter-spacing:.06em}
+.etapa h3{font-size:1.5rem}
+.etapa p{color:var(--muted);max-width:34ch}
+@media (min-width:820px){.etapas{grid-template-columns:repeat(3,1fr);gap:28px}}
+
+/* 8. trixie */
+.trixie{display:grid;gap:28px;align-items:center;margin-top:8px}
+.trixie .foto{background:var(--petrol);border-radius:14px;padding:28px 20px 0;display:grid;place-items:end center;min-height:260px}
+.trixie .foto img{max-height:300px;width:auto}
+.faz{list-style:none;margin:18px 0 0;padding:0;border:1px solid var(--line);border-radius:14px;background:var(--surface)}
+.faz li{padding:13px 18px}
+.faz li+li{border-top:1px solid var(--line)}
+.aviso{margin-top:16px;border-left:3px solid var(--gold);background:var(--note-bg);color:var(--gold-ink);padding:12px 14px;border-radius:0 10px 10px 0;font-size:.94rem}
+@media (min-width:820px){.trixie{grid-template-columns:5fr 7fr}}
+
+/* 9. planos */
+.alt{display:inline-grid;grid-auto-flow:column;grid-auto-columns:1fr;border:1px solid var(--line);border-radius:10px;overflow:hidden;margin-top:24px}
+.alt button{padding:10px 20px;font-weight:700;font-size:.92rem;color:var(--muted);text-align:center}
+.alt button+button{border-left:1px solid var(--line)}
+.alt button[aria-pressed="true"],.alt button[aria-selected="true"]{background:var(--emerald);color:var(--on-emerald)}
+.planos{display:grid;gap:16px;margin-top:20px}
+.plano{border:1px solid var(--line);border-radius:14px;background:var(--surface);padding:24px;display:flex;flex-direction:column;gap:14px}
+.plano.prem{background:var(--petrol);color:var(--on-petrol);border-color:var(--petrol)}
+.plano h3{font-size:1.3rem}
+.preco{font-family:var(--display);font-weight:800;font-size:2.3rem;line-height:1;font-variant-numeric:tabular-nums}
+.preco small{font-family:var(--body);font-weight:500;font-size:.92rem;opacity:.8}
+.equiv{font-size:.88rem;opacity:.8;min-height:1.4em}
+.plano ul{list-style:none;margin:0;padding:0;flex:1}
+.plano li{padding:10px 0;border-top:1px solid var(--line);display:flex;justify-content:space-between;gap:12px}
+.plano.prem li{border-color:rgba(246,238,225,.16)}
+.plano li em{font-style:normal;font-size:.76rem;font-weight:700;color:var(--gold-bright);white-space:nowrap}
+@media (min-width:820px){.planos{grid-template-columns:1fr 1fr}}
+
+/* 10. dúvidas */
+.abas{display:flex;gap:0;margin-top:28px;border-bottom:1px solid var(--line);overflow-x:auto}
+.abas button{padding:12px 18px;font-weight:700;color:var(--muted);border-bottom:2px solid transparent;margin-bottom:-1px;white-space:nowrap}
+.abas button[aria-selected="true"]{color:var(--emerald);border-bottom-color:var(--emerald)}
+.painel{max-width:780px}
+.painel[hidden]{display:none}
+details{border-bottom:1px solid var(--line)}
+summary{padding:18px 28px 18px 0;font-weight:700;cursor:pointer;list-style:none;position:relative}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";position:absolute;right:4px;top:14px;font-size:1.4rem;font-weight:400;color:var(--muted)}
+details[open] summary::after{content:"−"}
+details p{padding:0 0 18px;color:var(--muted);max-width:65ch}
+
+/* 11. instalar */
+.inst-g{display:grid;gap:16px;margin-top:32px}
+.so{border:1px solid var(--line);border-radius:14px;padding:24px;background:var(--surface);display:flex;flex-direction:column;gap:14px}
+.so.alvo{border:2px solid var(--emerald)}
+.so h3{font-size:1.3rem}
+.so ol{margin:0;padding:0;list-style:none;counter-reset:n;flex:1}
+.so li{counter-increment:n;display:flex;gap:14px;padding:12px 0;border-top:1px solid var(--line);align-items:baseline}
+.so li::before{content:counter(n);font-family:var(--display);font-weight:800;color:var(--gold-ink);width:1ch}
+.so .msg{font-size:.9rem;color:var(--emerald);font-weight:600;min-height:1.4em}
+.inst-g[hidden]{display:none}
+#instalar .alt{margin-top:28px}
+#instalar .inst-g{margin-top:20px}
+.abrir{margin-top:20px}
+@media (min-width:820px){.inst-g{grid-template-columns:1fr 1fr}}
+
+/* 12. cta e rodapé */
+.cta{background:var(--petrol);color:var(--on-petrol);padding:64px 0 0;overflow:hidden}
+.cta .wrap{display:grid;gap:24px;align-items:end}
+.cta h2{font-size:clamp(2rem,6vw,3.2rem);font-weight:800}
+.cta p{opacity:.9;margin:12px 0 20px;font-size:1.05rem}
+.cta .txt{padding-bottom:56px}
+.cta img{max-height:300px;width:auto;justify-self:center}
+@media (min-width:820px){.cta .wrap{grid-template-columns:7fr 5fr}}
+footer{background:var(--petrol);color:var(--on-petrol);border-top:1px solid rgba(246,238,225,.16);padding:32px 0 40px}
+footer .wrap{display:flex;flex-direction:column;gap:16px}
+footer .logo{color:var(--on-petrol);margin:0}
+footer nav{display:flex;flex-wrap:wrap;gap:8px 22px}
+footer nav a{color:var(--on-petrol);text-decoration:none;font-weight:600;font-size:.95rem}
+footer p{font-size:.88rem;opacity:.8;max-width:70ch}
+</style>
+</head>
+<body>
+
+<header class="bar">
+  <div class="wrap">
+    <a class="logo" href="#topo" data-ir="topo" aria-label="Diretrix, voltar ao início"><img class="sobre-claro" src="img/logo-diretrix.png" alt="Diretrix"><img class="sobre-escuro" src="img/logo-diretrix-claro.png" alt="Diretrix"></a>
+    <nav class="nav" aria-label="Seções">
+      <a href="#como-funciona" data-ir="como-funciona">Como funciona</a><a href="#trixie" data-ir="trixie">Trixie</a><a href="#planos" data-ir="planos">Planos</a><a href="#duvidas" data-ir="duvidas">Dúvidas</a>
+    </nav>
+    <button class="tbtn" id="btn-tema" aria-label="Alternar entre modo claro e escuro">Escuro</button>
+    <a class="btn pri sm inst" href="#instalar" data-ir="instalar">Instalar o app</a>
+    <button class="tbtn" id="btn-menu" aria-expanded="false" aria-controls="menu">Menu</button>
+  </div>
+  <nav id="menu" aria-label="Menu">
+    <a href="#como-funciona" data-ir="como-funciona">Como funciona</a><a href="#trixie" data-ir="trixie">Trixie</a><a href="#planos" data-ir="planos">Planos</a><a href="#duvidas" data-ir="duvidas">Dúvidas</a>
+    <a class="btn pri" href="#instalar" data-ir="instalar" style="border:0">Instalar o app</a>
+  </nav>
+</header>
+
+<main id="topo">
+
+<!-- 2. HERO -->
+<section id="hero" aria-label="Apresentação">
+  <div class="stage">
+    <div class="tint"></div>
+    <i class="ring r1"></i><i class="ring r2"></i>
+    <span class="folha" data-v="1.4" style="right:44%;top:112%">CDC, art. 49</span>
+    <span class="folha" data-v="2.2" style="right:8%;top:140%">Res. ANAC 400</span>
+    <span class="folha" data-v="1.8" style="right:56%;top:190%">CDC, art. 18</span>
+    <span class="folha" data-v="2.6" style="right:20%;top:230%">Decreto 7.962/2013</span>
+    <div class="ator" aria-hidden="true">
+      <canvas id="filme" width="840" height="840"></canvas>
+      <img class="pose" src="img/trixie-ola.webp" alt="">
+      <img class="pose" src="img/trixie-ajuda.webp" alt="">
+      <img class="pose" src="img/trixie-chat.webp" alt="">
+      <img class="pose" src="img/trixie-icone.webp" alt="">
+    </div>
+    <div class="copy">
+      <h1>Conheça seus direitos de consumidor <em>antes de precisar deles.</em></h1>
+      <p>O Diretrix explica a lei em linguagem simples e mostra o que fazer quando algo dá errado.</p>
+      <div class="acts"><button class="btn gold" data-ir-inst="cel">Instalar no celular</button><button class="btn ghost" data-ir-inst="pc">Instalar no computador</button><a class="btn ghost" href="app/index.html" target="_blank" rel="noopener">Abrir o protótipo</a></div>
+    </div>
+    <div class="scrub" aria-hidden="true"><i id="scrub"></i></div>
+  </div>
+</section>
+
+<!-- 3. O PROBLEMA -->
+<section class="problema">
+  <div class="wrap"><p class="rv">Voo cancelado, cobrança errada, compra com defeito. <span>Quase todo mundo já passou por isso sem saber o que podia exigir.</span></p></div>
+</section>
+
+<!-- 4. ANTES E DEPOIS -->
+<section class="sec">
+  <div class="wrap">
+    <span class="kicker">Antes e depois</span>
+    <h2>O mesmo problema, dois caminhos.</h2>
+    <div class="ad rv">
+      <div class="col sem"><h3>Sem o Diretrix</h3><ul>
+        <li><i>1</i>Você procura na internet e encontra respostas que se contradizem.</li>
+        <li><i>2</i>A lei parece escrita para advogados.</li>
+        <li><i>3</i>Você não sabe por onde começar a reclamar.</li>
+        <li><i>4</i>Escrever para a empresa toma tempo e dá insegurança.</li></ul></div>
+      <div class="col com"><h3>Com o Diretrix</h3><ul>
+        <li><i>1</i>Você consulta a situação e lê a regra com a fonte oficial.</li>
+        <li><i>2</i>Cada artigo vem explicado em palavras simples.</li>
+        <li><i>3</i>Um roteiro mostra o próximo passo e os canais oficiais.</li>
+        <li><i>4</i>O app prepara uma mensagem educada, pronta para você copiar.</li></ul></div>
+    </div>
+  </div>
+</section>
+
+<!-- 5. PROVA EM NÚMEROS -->
+<section class="sec" id="numeros">
+  <div class="wrap">
+    <span class="kicker">Prova em números</span>
+    <h2>O problema é comum. A solução existe.</h2>
+    <div class="pesq rv">
+      <p class="q">“Você já passou por uma situação em que não sabia quais eram seus direitos?”</p>
+      <div class="barras" id="barras">
+        <div class="b"><span>Sim</span><output data-conta="80" data-dec="0" data-suf="%">80%</output><div class="trilho"><i style="--w:80%;--c:var(--gold)"></i></div></div>
+        <div class="b"><span>Não</span><output data-conta="12.7" data-dec="1" data-suf="%">12,7%</output><div class="trilho"><i style="--w:12.7%;--c:var(--emerald)"></i></div></div>
+        <div class="b"><span>Não tenho certeza</span><output data-conta="7.3" data-dec="1" data-suf="%">7,3%</output><div class="trilho"><i style="--w:7.3%;--c:var(--plum)"></i></div></div>
+      </div>
+    </div>
+
+    <h3 class="sub-t">Consumidor.gov.br em 2025</h3>
+    <div class="nums rv">
+      <div><b data-conta="2328863" data-dec="0">2.328.863</b><span>reclamações finalizadas no ano</span></div>
+      <div><b data-conta="81.43" data-dec="2" data-suf="%">81,43%</b><span>das demandas resolvidas pelas empresas</span></div>
+      <div><b data-conta="6" data-dec="0" data-suf=" dias">6 dias</b><span>prazo médio de resposta</span></div>
+      <div><b data-conta="8.6" data-dec="1" data-suf=" milhões">8,6 milhões</b><span>de brasileiros cadastrados na plataforma</span></div>
+      <div class="aconf"><b>Dado a confirmar</b><span>Transporte aéreo: falta um número oficial da ANAC com fonte verificada.</span></div>
+    </div>
+    <p class="nota">Fonte: <a href="https://www.gov.br/mj/pt-br/assuntos/seus-direitos/consumidor/defesadoconsumidor/Biblioteca/boletins-1/boletim-consumidor-gov-br-2025-vfinal.pdf" target="_blank" rel="noopener">Boletim Consumidor.gov.br 2025, Senacon / Ministério da Justiça e Segurança Pública</a>.</p>
+  </div>
+</section>
+
+<!-- 6. CATEGORIAS -->
+<section class="sec">
+  <div class="wrap">
+    <span class="kicker">O que o app cobre</span>
+    <h2>Três categorias para começar.</h2>
+    <div class="cats">
+      <article class="cat rv" style="--k:var(--emerald)"><span class="n">01</span><h3>Aeroportos</h3><ul><li>Atraso e cancelamento de voo</li><li>Bagagem extraviada ou danificada</li><li>Embarque negado</li><li>Reembolso de passagem</li></ul></article>
+      <article class="cat rv" style="--k:var(--plum)"><span class="n">02</span><h3>Restaurantes</h3><ul><li>Taxa de serviço e couvert artístico</li><li>Consumação mínima</li><li>Perda de comanda</li><li>Cobrança indevida</li></ul></article>
+      <article class="cat rv" style="--k:var(--gold)"><span class="n">03</span><h3>Compras on-line e presenciais</h3><ul><li>Direito de arrependimento e troca</li><li>Produto com defeito</li><li>Atraso na entrega</li><li>Produto diferente do anunciado</li></ul></article>
+    </div>
+  </div>
+</section>
+
+<!-- 7. COMO FUNCIONA -->
+<section class="sec" id="como-funciona">
+  <div class="wrap">
+    <span class="kicker">Como funciona</span>
+    <h2>Consultar, entender, agir.</h2>
+    <div class="etapas">
+      <div class="etapa rv"><span class="n">ETAPA 1</span><h3>Consultar</h3><p>Encontre sua situação na biblioteca de direitos, sem cadastro.</p></div>
+      <div class="etapa rv"><span class="n">ETAPA 2</span><h3>Entender</h3><p>Leia a explicação simples, veja quando vale e quando não vale, e abra a lei original.</p></div>
+      <div class="etapa rv"><span class="n">ETAPA 3</span><h3>Agir</h3><p>Siga o checklist, acesse os canais oficiais e prepare sua solicitação.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 8. TRIXIE -->
+<section class="sec" id="trixie">
+  <div class="wrap trixie">
+    <div class="foto rv"><img src="img/trixie-chat.webp" alt="Trixie, a coruja do Diretrix, segurando um livro de leis"></div>
+    <div class="rv">
+      <span class="kicker">Conheça a Trixie</span>
+      <h2>Oi, eu sou a Trixie.</h2>
+      <p class="lead">Sou a assistente do Diretrix. Faço perguntas curtas para entender o seu caso e respondo com conteúdo revisado, sempre mostrando a fonte.</p>
+      <ul class="faz">
+        <li>Explica cada direito passo a passo.</li>
+        <li>Guarda suas conversas no histórico.</li>
+        <li>Recebe fotos e documentos para você ter tudo num só lugar.</li>
+        <li>Leva você direto ao próximo passo.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- 9. PLANOS -->
+<section class="sec" id="planos">
+  <div class="wrap">
+    <span class="kicker">Planos</span>
+    <h2>Consultar é gratuito. O Premium amplia.</h2>
+    <div class="alt" role="group" aria-label="Período do Premium"><button aria-pressed="true" data-per="mensal">Mensal</button><button aria-pressed="false" data-per="semestral">Semestral</button></div>
+    <div class="planos">
+      <div class="plano rv">
+        <h3>Gratuito</h3>
+        <div class="preco">R$ 0</div><p class="equiv">Para sempre.</p>
+        <ul><li>Biblioteca completa e fontes oficiais</li><li>Trixie com limite diário de mensagens</li><li>Até 2 fotos e 2 documentos</li><li>Histórico das conversas recentes</li><li>Próximo passo, checklist e preparo de solicitações</li></ul>
+        <a class="btn out" href="app/index.html" target="_blank" rel="noopener">Abrir o app</a>
+      </div>
+      <div class="plano prem rv">
+        <h3>Premium</h3>
+        <div class="preco"><span id="preco">R$ 9,90</span> <small id="per">por mês</small></div><p class="equiv" id="equiv">Cobrança mensal.</p>
+        <ul><li>Tudo do Gratuito</li><li>Mais mensagens com a Trixie</li><li>Mais fotos e documentos</li><li>Ouvir as respostas da Trixie</li><li>Histórico ampliado</li><li>Organização de documentos</li><li>Sem anúncios</li><li>Leitura assistida de documentos <em>em breve</em></li></ul>
+        <a class="btn gold" href="app/index.html" target="_blank" rel="noopener">Assinar no app</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 10. DÚVIDAS -->
+<section class="sec" id="duvidas">
+  <div class="wrap">
+    <span class="kicker">Dúvidas frequentes</span>
+    <h2>O que as pessoas perguntam.</h2>
+    <div class="abas" role="tablist" aria-label="Temas das dúvidas">
+      <button role="tab" id="aba-geral" aria-controls="p-geral" aria-selected="true">Geral</button>
+      <button role="tab" id="aba-planos" aria-controls="p-planos" aria-selected="false" tabindex="-1">Planos</button>
+      <button role="tab" id="aba-trixie" aria-controls="p-trixie" aria-selected="false" tabindex="-1">Trixie</button>
+      <button role="tab" id="aba-inst" aria-controls="p-inst" aria-selected="false" tabindex="-1">Instalação</button>
+    </div>
+    <div class="painel" role="tabpanel" id="p-geral" aria-labelledby="aba-geral">
+      <details open><summary>O Diretrix substitui um advogado?</summary><p>Não. O Diretrix oferece informação educativa e orientações gerais. Em casos complexos, procure um advogado, a Defensoria Pública ou o Procon.</p></details>
+      <details><summary>De onde vêm as informações?</summary><p>Do Código de Defesa do Consumidor, do Decreto nº 7.962/2013, das regras da ANAC e de orientações públicas de Procons. Cada conteúdo mostra a fonte oficial, a data de revisão e se já foi verificado.</p></details>
+      <details><summary>Preciso me cadastrar?</summary><p>Não. A biblioteca de direitos funciona sem cadastro, sem CPF e sem localização.</p></details>
+      <details><summary>Quais temas o app cobre?</summary><p>Nesta fase, três categorias: Aeroportos, Restaurantes e Compras on-line e presenciais.</p></details>
+    </div>
+    <div class="painel" role="tabpanel" id="p-planos" aria-labelledby="aba-planos" hidden>
+      <details open><summary>O que é gratuito?</summary><p>A biblioteca completa, as explicações, as fontes oficiais, o próximo passo com checklist e a Trixie com limite diário, incluindo até 2 fotos e 2 documentos.</p></details>
+      <details><summary>O que muda no Premium?</summary><p>Mais mensagens e mais envios de fotos e documentos, histórico ampliado, respostas em voz alta e organização de documentos. A leitura assistida de documentos ainda está em desenvolvimento.</p></details>
+      <details><summary>Como assino?</summary><p>Pelo app, em Perfil, Assinatura. Nesta fase de protótipo a assinatura é uma simulação, sem cobrança.</p></details>
+      <details><summary>Tem anúncios?</summary><p>Não há anúncios nesta versão.</p></details>
+    </div>
+    <div class="painel" role="tabpanel" id="p-trixie" aria-labelledby="aba-trixie" hidden>
+      <details open><summary>A Trixie é uma IA?</summary><p>Hoje, não. Ela é uma assistente guiada: faz perguntas curtas e responde com textos cadastrados e revisados. Perguntas fora dos temas do app recebem um aviso de que a consulta ainda não está disponível.</p></details>
+      <details><summary>Ela lê meus documentos?</summary><p>Ainda não. Fotos e documentos ficam guardados na conversa para você consultar ao preparar sua solicitação.</p></details>
+      <details><summary>Minhas conversas ficam salvas onde?</summary><p>Só no seu aparelho. Não há servidor do Diretrix recebendo suas conversas, e você pode apagar tudo no Perfil.</p></details>
+      <details><summary>Ela garante que vou ganhar a reclamação?</summary><p>Não. A Trixie explica quais direitos podem se aplicar e indica caminhos, mas não garante resultados nem indenizações.</p></details>
+    </div>
+    <div class="painel" role="tabpanel" id="p-inst" aria-labelledby="aba-inst" hidden>
+      <details open><summary>Preciso de loja de aplicativos?</summary><p>Não. O Diretrix é instalado direto pelo navegador, a partir deste site.</p></details>
+      <details><summary>Funciona no iPhone?</summary><p>Sim, pelo Safari: toque em Compartilhar e em “Adicionar à Tela de Início”.</p></details>
+      <details><summary>Funciona sem internet?</summary><p>Depois de instalado, o app abre sem internet, porque o conteúdo fica guardado no aparelho. Os links para as fontes oficiais precisam de conexão.</p></details>
+      <details><summary>Como desinstalo?</summary><p>Como qualquer app: segure o ícone na tela inicial e escolha remover ou desinstalar.</p></details>
+    </div>
+  </div>
+</section>
+
+<!-- 11. COMO INSTALAR -->
+<section class="sec" id="instalar">
+  <div class="wrap">
+    <span class="kicker">Como instalar</span>
+    <h2>Instale o Diretrix no celular ou no computador.</h2>
+    <p class="lead">O app abre em janela própria, com a carinha da coruja na tela inicial, no Dock ou no menu Iniciar.</p>
+    <div class="alt" role="tablist" aria-label="Onde instalar">
+      <button role="tab" id="tab-cel" aria-controls="inst-cel" aria-selected="true" aria-pressed="true">Celular</button>
+      <button role="tab" id="tab-pc" aria-controls="inst-pc" aria-selected="false" aria-pressed="false" tabindex="-1">PC</button>
+    </div>
+    <div class="inst-g" id="inst-cel" role="tabpanel" aria-labelledby="tab-cel">
+      <div class="so" id="so-android">
+        <h3>Android, pelo Chrome</h3>
+        <ol><li>Abra o site no Chrome.</li><li>Toque em “Instalar no Android”.</li><li>Confirme em “Instalar”. Se o aviso não aparecer, use o menu de três pontos e escolha “Instalar app”.</li></ol>
+        <button class="btn pri" data-instalar="android">Instalar no Android</button>
+        <p class="msg" role="status"></p>
+      </div>
+      <div class="so" id="so-ios">
+        <h3>iPhone, pelo Safari</h3>
+        <ol><li>Abra o site no Safari.</li><li>Toque em Compartilhar.</li><li>Toque em “Adicionar à Tela de Início”.</li><li>Toque em “Adicionar”.</li></ol>
+        <button class="btn out" data-instalar="ios">Instalar no iPhone</button>
+        <p class="msg" role="status"></p>
+      </div>
+    </div>
+    <div class="inst-g" id="inst-pc" role="tabpanel" aria-labelledby="tab-pc" hidden>
+      <div class="so" id="so-windows">
+        <h3>Windows, pelo Chrome ou Edge</h3>
+        <ol><li>Abra o site no Chrome ou no Microsoft Edge.</li><li>Clique em “Instalar no Windows”.</li><li>Confirme em “Instalar”. O Diretrix ganha atalho no menu Iniciar e na área de trabalho.</li></ol>
+        <button class="btn pri" data-instalar="windows">Instalar no Windows</button>
+        <p class="msg" role="status"></p>
+      </div>
+      <div class="so" id="so-mac">
+        <h3>Mac, pelo Chrome, Edge ou Safari</h3>
+        <ol><li>Abra o site no Chrome, no Edge ou no Safari.</li><li>No Chrome ou no Edge, clique em “Instalar no Mac” e confirme.</li><li>No Safari, vá em Arquivo e escolha “Adicionar ao Dock”.</li><li>O Diretrix aparece no Dock e na pasta Aplicativos.</li></ol>
+        <button class="btn out" data-instalar="mac">Instalar no Mac</button>
+        <p class="msg" role="status"></p>
+      </div>
+    </div>
+    <div class="abrir"><a class="btn out" href="app/index.html" target="_blank" rel="noopener">Abrir o protótipo no navegador</a></div>
+  </div>
+</section>
+
+<!-- 12. CTA FINAL -->
+<section class="cta">
+  <div class="wrap">
+    <div class="txt">
+      <h2>Leve a Trixie no bolso.</h2>
+      <p>Gratuito para consultar. Instale e conheça seus direitos.</p>
+      <div class="acts"><button class="btn gold" data-ir-inst="cel">Instalar no celular</button><button class="btn ghost" data-ir-inst="pc">Instalar no computador</button><a class="btn ghost" href="app/index.html" target="_blank" rel="noopener">Abrir o protótipo</a></div>
+    </div>
+    <img src="img/trixie-ola.webp" alt="Trixie acenando">
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <a class="logo" href="#topo" data-ir="topo" aria-label="Diretrix, voltar ao início"><img class="sobre-claro" src="img/logo-diretrix.png" alt="Diretrix"><img class="sobre-escuro" src="img/logo-diretrix-claro.png" alt="Diretrix"></a>
+    <nav aria-label="Rodapé"><a href="#como-funciona" data-ir="como-funciona">Como funciona</a><a href="#trixie" data-ir="trixie">Trixie</a><a href="#planos" data-ir="planos">Planos</a><a href="#duvidas" data-ir="duvidas">Dúvidas</a></nav>
+    <p>O Diretrix oferece informação educativa sobre direitos do consumidor e não substitui a orientação de um advogado.</p>
+  </div>
+</footer>
+
+<script src="js/motion.js"></script>
+<script>
+(function () {
+  var doc = document.documentElement, $ = function (s) { return document.querySelector(s); }, $$ = function (s) { return [].slice.call(document.querySelectorAll(s)); };
+  var calmo = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var lim = function (x) { return Math.max(0, Math.min(1, x)); };
+  var suave = function (t) { return t * t * (3 - 2 * t); };
+
+  /* ---------- tema claro/escuro ---------- */
+  var btnTema = $('#btn-tema');
+  function escuroAgora() { var t = doc.getAttribute('data-theme'); return t ? t === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches; }
+  function rotulo() { btnTema.textContent = escuroAgora() ? 'Claro' : 'Escuro'; }
+  try { var salvo = localStorage.getItem('diretrix-site-tema'); if (salvo) doc.setAttribute('data-theme', salvo); } catch (e) { }
+  rotulo();
+  btnTema.addEventListener('click', function () {
+    var novo = escuroAgora() ? 'light' : 'dark'; doc.setAttribute('data-theme', novo);
+    try { localStorage.setItem('diretrix-site-tema', novo); } catch (e) { }
+    rotulo();
+  });
+
+  /* ---------- menu no celular e links internos ---------- */
+  var menu = $('#menu'), btnMenu = $('#btn-menu');
+  btnMenu.addEventListener('click', function () { var a = menu.classList.toggle('aberto'); btnMenu.setAttribute('aria-expanded', a); btnMenu.textContent = a ? 'Fechar' : 'Menu'; });
+  function ir(id) { var el = document.getElementById(id); if (el) el.scrollIntoView({ behavior: calmo ? 'auto' : 'smooth' }); menu.classList.remove('aberto'); btnMenu.setAttribute('aria-expanded', false); btnMenu.textContent = 'Menu'; }
+  $$('[data-ir]').forEach(function (a) { a.addEventListener('click', function (e) { e.preventDefault(); ir(a.dataset.ir); }); });
+
+  /* ---------- hero: fundo que avança e retrocede com a rolagem ---------- */
+  var hero = $('#hero'), poses = $$('.pose'), aneis = $$('.ring'), folhas = $$('.folha'), tint = $('.tint'), scrub = $('#scrub');
+  var N = poses.length, PI = Math.PI;
+  var MOV = [
+    function (t) { return 'rotate(' + (Math.sin(t * PI * 3) * 4.5) + 'deg)'; },                                        // acena
+    function (t) { return 'rotate(' + (-3 + 6 * suave(t)) + 'deg) scale(' + (.96 + .06 * t) + ')'; },                   // pensa
+    function (t) { return 'translateY(' + (-10 * Math.sin(t * PI * 2)) + 'px) rotate(' + (2 * Math.sin(t * PI * 2)) + 'deg)'; }, // aponta
+    function (t) { return 'scale(' + (.94 + .1 * suave(t)) + ')'; }                                                     // se aproxima
+  ];
+  function quadro(p) {
+    ultimoP = p;
+    var pos = p * N;
+    for (var i = 0; i < N; i++) {
+      var local = pos - i;
+      var entra = i === 0 ? 1 : suave(lim((local + .12) / .24));
+      var sai = i === N - 1 ? 1 : 1 - suave(lim((local - .88) / .24));
+      var v = Math.min(entra, sai);
+      poses[i].style.opacity = v;
+      poses[i].style.transform = 'translateY(' + ((1 - v) * 22) + 'px) ' + MOV[i](lim(local));
+    }
+    if (filmePronto) desenhar(pos);
+    aneis.forEach(function (a, k) { a.style.transform = 'rotate(' + (p * (k ? -120 : 100)) + 'deg) scale(' + (1 + p * .12 * (k + 1)) + ')'; });
+    folhas.forEach(function (f) { var v = parseFloat(f.dataset.v); f.style.transform = 'translateY(' + (-p * 190 * v) + 'vh) rotate(' + ((p * 30 - 6) * (v > 2 ? -1 : 1)) + 'deg)'; });
+    tint.style.opacity = Math.sin(lim((p - .2) / .55) * PI) * .7;
+    scrub.style.width = (p * 100) + '%';
+  }
+  /* vídeos da Trixie: 4 clipes de 30 quadros cada, guardados em folhas de 6 x 5.
+     A rolagem escolhe o quadro, então o vídeo avança ao descer e retrocede ao subir. */
+  var CLIPES = ['ola', 'pensa', 'aponta', 'confia'], QUADROS = 30, COLS = 6, LADO = 420;
+  var tela = $('#filme'), ctx = tela.getContext('2d'), folhasVideo = [], filmePronto = false, ultimoP = 0;
+  function umQuadro(clip, q, alfa) {
+    ctx.globalAlpha = alfa;
+    ctx.drawImage(folhasVideo[clip], (q % COLS) * LADO, Math.floor(q / COLS) * LADO, LADO, LADO, 0, 0, tela.width, tela.height);
+  }
+  function desenhar(pos) {
+    var c = Math.min(N - 1, Math.floor(pos)), local = pos - c, q = Math.min(QUADROS - 1, Math.floor(local * QUADROS));
+    ctx.clearRect(0, 0, tela.width, tela.height);
+    var troca = c < N - 1 ? suave(lim((local - .94) / .06)) : 0;   // passagem curta entre um clipe e o próximo
+    if (troca > 0) { umQuadro(c, QUADROS - 1, 1 - troca); umQuadro(c + 1, 0, troca); }
+    else umQuadro(c, q, 1);
+    ctx.globalAlpha = 1;
+  }
+  if (!calmo) {
+    var faltam = CLIPES.length;
+    CLIPES.forEach(function (nome, i) {
+      var im = new Image();
+      im.onload = function () { if (--faltam === 0) { filmePronto = true; tela.parentNode.classList.add('video'); desenhar(ultimoP * N); } };
+      im.src = 'img/trixie-' + nome + '-filme.webp';
+      folhasVideo[i] = im;
+    });
+  }
+  quadro(0);
+  if (!calmo) {
+    if (window.Motion && Motion.scroll) Motion.scroll(quadro, { target: hero, offset: ['start start', 'end end'] });
+    else { var medir = function () { var r = hero.getBoundingClientRect(); quadro(lim(-r.top / (r.height - innerHeight))); }; addEventListener('scroll', medir, { passive: true }); addEventListener('resize', medir); medir(); }
+  }
+
+  /* ---------- seções que aparecem e números que contam ---------- */
+  function fmt(n, dec) { return n.toLocaleString('pt-BR', { minimumFractionDigits: dec, maximumFractionDigits: dec }); }
+  function contar(el) {
+    var alvo = parseFloat(el.dataset.conta), dec = +el.dataset.dec, suf = el.dataset.suf || '', t0 = null, dur = 1300;
+    function passo(t) { if (!t0) t0 = t; var k = lim((t - t0) / dur), e = 1 - Math.pow(1 - k, 3); el.textContent = fmt(alvo * e, dec) + suf; if (k < 1) requestAnimationFrame(passo); }
+    requestAnimationFrame(passo);
+  }
+  if (!calmo && 'IntersectionObserver' in window) {
+    doc.classList.add('js-rv');
+    var io = new IntersectionObserver(function (es) {
+      es.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        e.target.classList.add('in'); io.unobserve(e.target);
+        if (e.target.hasAttribute('data-conta')) contar(e.target);
+      });
+    }, { threshold: .2 });
+    $$('.rv, #barras, [data-conta]').forEach(function (el) { io.observe(el); });
+  }
+
+  /* ---------- alternância de plano ---------- */
+  var PLANO = { mensal: ['R$ 9,90', 'por mês', 'Cobrança mensal.'], semestral: ['R$ 54,90', 'por semestre', 'Equivale a R$ 9,15 por mês.'] };
+  $$('[data-per]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      $$('[data-per]').forEach(function (x) { x.setAttribute('aria-pressed', x === b); });
+      var p = PLANO[b.dataset.per]; $('#preco').textContent = p[0]; $('#per').textContent = p[1]; $('#equiv').textContent = p[2];
+    });
+  });
+
+  /* ---------- abas das dúvidas ---------- */
+  var abas = $$('[role="tab"]');
+  function abrirAba(t) {
+    abas.forEach(function (x) { var on = x === t; x.setAttribute('aria-selected', on); x.tabIndex = on ? 0 : -1; document.getElementById(x.getAttribute('aria-controls')).hidden = !on; });
+  }
+  abas.forEach(function (t, i) {
+    t.addEventListener('click', function () { abrirAba(t); });
+    t.addEventListener('keydown', function (e) {
+      if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+      var n = abas[(i + (e.key === 'ArrowRight' ? 1 : abas.length - 1)) % abas.length]; abrirAba(n); n.focus();
+    });
+  });
+
+  /* ---------- instalação (PWA) ----------
+     Chrome e Edge (Android, Windows e Mac): o botão abre o pedido de instalação do navegador.
+     iPhone e Safari no Mac: a Apple não deixa um site se instalar sozinho; o botão mostra o caminho.
+     Dentro do Claude (página em moldura) o navegador bloqueia qualquer instalação. */
+  var ua = navigator.userAgent, adiado = null;
+  var ios = /iphone|ipad|ipod/i.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  var android = /android/i.test(ua), windows = /windows/i.test(ua), mac = !ios && /macintosh|mac os x/i.test(ua);
+  var safari = /safari/i.test(ua) && !/chrome|chromium|crios|edg|fxios|android/i.test(ua);
+  var celular = ios || android || /mobile/i.test(ua);
+  var emMoldura = (function () { try { return window.self !== window.top; } catch (e) { return true; } })();
+  var instalado = matchMedia('(display-mode: standalone)').matches || navigator.standalone === true;
+
+  /* abas Celular / PC */
+  var tabs = [$('#tab-cel'), $('#tab-pc')];
+  function mostrar(qual) {
+    tabs.forEach(function (t) {
+      var on = t.id === 'tab-' + qual;
+      t.setAttribute('aria-selected', on); t.setAttribute('aria-pressed', on); t.tabIndex = on ? 0 : -1;
+      document.getElementById(t.getAttribute('aria-controls')).hidden = !on;
+    });
+  }
+  tabs.forEach(function (t, i) {
+    t.addEventListener('click', function () { mostrar(t.id.slice(4)); });
+    t.addEventListener('keydown', function (e) {
+      if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+      var n = tabs[1 - i]; mostrar(n.id.slice(4)); n.focus();
+    });
+  });
+  mostrar(celular ? 'cel' : 'pc');
+  var meu = ios ? 'ios' : android ? 'android' : windows ? 'windows' : mac ? 'mac' : '';
+  if (meu) $('#so-' + meu).classList.add('alvo');
+  $$('[data-ir-inst]').forEach(function (b) { b.addEventListener('click', function () { mostrar(b.dataset.irInst); ir('instalar'); }); });
+
+  addEventListener('beforeinstallprompt', function (e) { e.preventDefault(); adiado = e; });
+  addEventListener('appinstalled', function () { adiado = null; $$('.so .msg').forEach(function (m) { m.textContent = 'Diretrix instalado. Procure a carinha da coruja.'; }); });
+
+  var MOLDURA = 'Nesta prévia dentro do Claude o navegador não permite instalar. Instale pelo site publicado ou use “Abrir o protótipo”.';
+  var ROTEIRO = {
+    android: function () { return ios ? 'Este aparelho é um iPhone: use os passos do Safari ao lado.' : android ? 'Abra o menu de três pontos do Chrome e escolha “Instalar app”.' : 'Abra este site no Chrome do seu celular Android.'; },
+    ios: function () { return ios ? 'Toque em Compartilhar, na barra do Safari, e depois em “Adicionar à Tela de Início”.' : 'Abra este site no Safari do iPhone.'; },
+    windows: function () { return windows ? 'Clique no ícone de instalar no fim da barra de endereço, ou abra o menu do navegador e escolha “Instalar Diretrix”. No Firefox não há instalação: use o Chrome ou o Edge.' : 'Abra este site no Chrome ou no Edge do seu computador Windows.'; },
+    mac: function () { return !mac ? 'Abra este site no Chrome, no Edge ou no Safari do seu Mac.' : safari ? 'No Safari, abra o menu Arquivo e escolha “Adicionar ao Dock”. Precisa do macOS Sonoma ou mais novo.' : 'Clique no ícone de instalar no fim da barra de endereço, ou abra o menu do navegador e escolha “Instalar Diretrix”.'; }
+  };
+  $$('[data-instalar]').forEach(function (b) {
+    var msg = b.parentNode.querySelector('.msg');
+    b.addEventListener('click', function () {
+      var alvo = b.dataset.instalar;
+      if (instalado) { msg.textContent = 'O Diretrix já está instalado neste aparelho.'; return; }
+      if (emMoldura) { msg.textContent = MOLDURA; return; }
+      var pedeNavegador = alvo !== 'ios' && !(alvo === 'mac' && safari);
+      if (adiado && pedeNavegador) {
+        adiado.prompt();
+        adiado.userChoice.then(function (r) { msg.textContent = r.outcome === 'accepted' ? 'Instalando. A carinha da coruja vai aparecer em instantes.' : 'Instalação cancelada. Você pode tentar de novo quando quiser.'; });
+        adiado = null; return;
+      }
+      msg.textContent = ROTEIRO[alvo]();
+    });
+  });
+  if (instalado) $$('.so .msg').forEach(function (m) { m.textContent = 'O Diretrix já está instalado neste aparelho.'; });
+  if ('serviceWorker' in navigator && location.protocol === 'https:' && !emMoldura) {
+    try { navigator.serviceWorker.register('sw.js').catch(function () { }); } catch (e) { }
+  }
+})();
+</script>
+</body>
+</html>
