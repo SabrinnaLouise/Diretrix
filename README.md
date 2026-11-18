@@ -23,10 +23,6 @@ Quem acompanha você é a **Trixie**, uma coruja assistente que faz perguntas cu
 
 > O Diretrix oferece informação educativa e não substitui a orientação de um advogado.
 
-<p align="center">
-  <img src="docs/site.jpg" alt="Página inicial do site do Diretrix" width="720">
-</p>
-
 ## Por que existe
 
 Em uma pesquisa feita pela equipe do Diretrix, com 55 respostas:
